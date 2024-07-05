@@ -1,0 +1,97 @@
+{
+  "variants": {
+    "axis=x,axis_along_first=false,part=start": {
+      "model": "create:block/gantry_carriage/wheels",
+      "x": 180
+    },
+    "axis=y,axis_along_first=false,part=start": {
+      "model": "create:block/gantry_carriage/wheels"
+    },
+    "axis=z,axis_along_first=false,part=start": {
+      "model": "create:block/gantry_carriage/wheels",
+      "x": 270,
+      "y": 90
+    },
+    "axis=x,axis_along_first=true,part=start": {
+      "model": "create:block/gantry_carriage/wheels",
+      "x": 270
+    },
+    "axis=y,axis_along_first=true,part=start": {
+      "model": "create:block/gantry_carriage/wheels",
+      "y": 270
+    },
+    "axis=z,axis_along_first=true,part=start": {
+      "model": "create:block/gantry_carriage/wheels",
+      "y": 90
+    },
+    "axis=x,axis_along_first=false,part=middle": {
+      "model": "create:block/gantry_carriage/wheels"
+    },
+    "axis=y,axis_along_first=false,part=middle": {
+      "model": "create:block/gantry_carriage/wheels"
+    },
+    "axis=z,axis_along_first=false,part=middle": {
+      "model": "create:block/gantry_carriage/wheels",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,axis_along_first=true,part=middle": {
+      "model": "create:block/gantry_carriage/wheels",
+      "x": 90
+    },
+    "axis=y,axis_along_first=true,part=middle": {
+      "model": "create:block/gantry_carriage/wheels",
+      "y": 90
+    },
+    "axis=z,axis_along_first=true,part=middle": {
+      "model": "create:block/gantry_carriage/wheels",
+      "y": 90
+    },
+    "axis=x,axis_along_first=false,part=end": {
+      "model": "create:block/gantry_carriage/wheels"
+    },
+    "axis=y,axis_along_first=false,part=end": {
+      "model": "create:block/gantry_carriage/wheels",
+      "y": 180
+    },
+    "axis=z,axis_along_first=false,part=end": {
+      "model": "create:block/gantry_carriage/wheels",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,axis_along_first=true,part=end": {
+      "model": "create:block/gantry_carriage/wheels",
+      "x": 90
+    },
+    "axis=y,axis_along_first=true,part=end": {
+      "model": "create:block/gantry_carriage/wheels",
+      "y": 90
+    },
+    "axis=z,axis_along_first=true,part=end": {
+      "model": "create:block/gantry_carriage/wheels",
+      "y": 270
+    },
+    "axis=x,axis_along_first=false,part=none": {
+      "model": "create:block/gantry_carriage/wheels",
+      "y": 90
+    },
+    "axis=y,axis_along_first=false,part=none": {
+      "model": "create:block/gantry_carriage/wheels",
+      "x": 90
+    },
+    "axis=z,axis_along_first=false,part=none": {
+      "model": "create:block/gantry_carriage/wheels"
+    },
+    "axis=x,axis_along_first=true,part=none": {
+      "model": "create:block/gantry_carriage/wheels",
+      "y": 90
+    },
+    "axis=y,axis_along_first=true,part=none": {
+      "model": "create:block/gantry_carriage/wheels",
+      "x": 90
+    },
+    "axis=z,axis_along_first=true,part=none": {
+      "model": "create:block/gantry_carriage/wheels"
+    }
+  }
+}

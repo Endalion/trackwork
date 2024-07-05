@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WPH",
+    "CTC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "create:copper_sheet"
+    },
+    "T": {
+      "item": "create:red_toolbox"
+    },
+    "P": {
+      "item": "create:precision_mechanism"
+    },
+    "W": {
+      "item": "create:wrench"
+    },
+    "H": {
+      "item": "create:hand_crank"
+    }
+  },
+  "result": {
+    "item": "trackwork:track_tool_kit",
+    "count": 1
+  }
+}

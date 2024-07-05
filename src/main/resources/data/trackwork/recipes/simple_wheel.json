@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "AAW",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "item": "create:andesite_alloy"
+    },
+    "W": {
+      "item": "trackwork:simple_wheel_part"
+    },
+    "S": {
+      "item": "create:mechanical_piston"
+    }
+  },
+  "result": {
+    "item": "trackwork:simple_wheel",
+    "count": 1
+  }
+}

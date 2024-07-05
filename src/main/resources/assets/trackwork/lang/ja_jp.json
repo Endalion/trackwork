@@ -1,0 +1,36 @@
+{
+  "block.trackwork.suspension_track": "油圧式転輪",
+  "block.trackwork.med_suspension_track": "中型油圧式転輪",
+  "block.trackwork.large_suspension_track" : "大型油圧式転輪",
+  "block.trackwork.phys_track" : "動輪軸",
+  "block.trackwork.med_phys_track" : "中型動輪軸",
+  "block.trackwork.large_phys_track" : "大型動輪軸",
+  "block.trackwork.track_level_controller" : "油圧調整コントローラー",
+  "block.trackwork.simple_wheel": "自走タイヤ",
+  "block.trackwork.simple_wheel_part": "自走タイヤ部品",
+
+  "itemGroup.trackwork": "Trackwork",
+  "item.trackwork.track_tool_kit" : "履帯ツールキット",
+  "item.trackwork.track_tool_kit.tooltip.behaviour1" : "履帯のバランスを\"よりがっちりしたもの\"にしますが、荒い地形ではあまり作用しません。\"スニーク\"でバランスを元に戻します。",
+  "item.trackwork.track_tool_kit.tooltip.behaviour2" : "ホイールをクリックすることで、ホイール自体の位置を前方と後方に調整可能です。",
+  "item.trackwork.track_tool_kit.tooltip.condition1" : "油圧調整棒を使用したとき、",
+  "item.trackwork.track_tool_kit.tooltip.condition2" : "パワーレンチを使用するとき、",
+  "item.trackwork.track_tool_kit.tooltip.summary" : "Multiple tools for working with tracks, packed into one convenient kit!",
+
+  "death.attack.trackwork.track" : "%1$s 交通事故にあった",
+  "death.attack.trackwork.track.player" : "%1$s によってトラックの下敷きにされた %2$s",
+
+  "trackwork.ponder.tracks.header" : "トラック作り101",
+  "trackwork.ponder.tracks.text_1" : "免責事項：トラックは組み立てられたVS2シップでのみ動作します！",
+  "trackwork.ponder.tracks.text_2" : "チェーンドライブのブロックのようにね、 ",
+  "trackwork.ponder.tracks.text_3" : "トラックは一列に並んでいる。",
+  "trackwork.ponder.tracks.text_4" : "トラックは連結された動輪軸を介して動力を供給される。",
+
+  "trackwork.ponder.wheels.header" : "ホイール作り101",
+  "trackwork.ponder.wheels.text_1" : "免責事項：ホイールは組み立てられたVS2シップでのみ動作します！",
+  "trackwork.ponder.wheels.text_2" : "ホイールは、まあ、ホイールのように配置されている",
+  "trackwork.ponder.wheels.text_3" : "車輪を内側から駆動する、",
+  "trackwork.ponder.wheels.text_4" : "あるいは、ホイールを自由に回転させるために接続しない。",
+  "trackwork.ponder.wheels.text_5" : "レッドストーンで車輪を動かして操舵する",
+  "trackwork.ponder.wheels.text_6" : "そうすれば、反対側も自動的に続く。"
+}

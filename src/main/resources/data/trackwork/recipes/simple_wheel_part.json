@@ -1,0 +1,28 @@
+{
+  "type": "create:mechanical_crafting",
+  "pattern": [
+    " BBB ",
+    "BAPAB",
+    "BPCPB",
+    "BAPAB",
+    " BBB "
+  ],
+  "key": {
+    "A": {
+      "item": "create:andesite_alloy"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "C": {
+      "item": "create:cogwheel"
+    },
+    "B": {
+      "item": "create:belt_connector"
+    }
+  },
+  "result": {
+    "item": "trackwork:simple_wheel_part",
+    "count": 2
+  }
+}

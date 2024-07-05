@@ -1,0 +1,97 @@
+{
+  "variants": {
+    "axis=x,axis_along_first=false,part=start": {
+      "model": "trackwork:block/empty",
+      "x": 180
+    },
+    "axis=y,axis_along_first=false,part=start": {
+      "model": "trackwork:block/empty"
+    },
+    "axis=z,axis_along_first=false,part=start": {
+      "model": "trackwork:block/empty",
+      "x": 270,
+      "y": 90
+    },
+    "axis=x,axis_along_first=true,part=start": {
+      "model": "trackwork:block/empty",
+      "x": 270
+    },
+    "axis=y,axis_along_first=true,part=start": {
+      "model": "trackwork:block/empty",
+      "y": 270
+    },
+    "axis=z,axis_along_first=true,part=start": {
+      "model": "trackwork:block/empty",
+      "y": 90
+    },
+    "axis=x,axis_along_first=false,part=middle": {
+      "model": "trackwork:block/empty"
+    },
+    "axis=y,axis_along_first=false,part=middle": {
+      "model": "trackwork:block/empty"
+    },
+    "axis=z,axis_along_first=false,part=middle": {
+      "model": "trackwork:block/empty",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,axis_along_first=true,part=middle": {
+      "model": "trackwork:block/empty",
+      "x": 90
+    },
+    "axis=y,axis_along_first=true,part=middle": {
+      "model": "trackwork:block/empty",
+      "y": 90
+    },
+    "axis=z,axis_along_first=true,part=middle": {
+      "model": "trackwork:block/empty",
+      "y": 90
+    },
+    "axis=x,axis_along_first=false,part=end": {
+      "model": "trackwork:block/empty"
+    },
+    "axis=y,axis_along_first=false,part=end": {
+      "model": "trackwork:block/empty",
+      "y": 180
+    },
+    "axis=z,axis_along_first=false,part=end": {
+      "model": "trackwork:block/empty",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,axis_along_first=true,part=end": {
+      "model": "trackwork:block/empty",
+      "x": 90
+    },
+    "axis=y,axis_along_first=true,part=end": {
+      "model": "trackwork:block/empty",
+      "y": 90
+    },
+    "axis=z,axis_along_first=true,part=end": {
+      "model": "trackwork:block/empty",
+      "y": 270
+    },
+    "axis=x,axis_along_first=false,part=none": {
+      "model": "trackwork:block/empty",
+      "y": 90
+    },
+    "axis=y,axis_along_first=false,part=none": {
+      "model": "trackwork:block/empty",
+      "x": 90
+    },
+    "axis=z,axis_along_first=false,part=none": {
+      "model": "trackwork:block/empty"
+    },
+    "axis=x,axis_along_first=true,part=none": {
+      "model": "trackwork:block/empty",
+      "y": 90
+    },
+    "axis=y,axis_along_first=true,part=none": {
+      "model": "trackwork:block/empty",
+      "x": 90
+    },
+    "axis=z,axis_along_first=true,part=none": {
+      "model": "trackwork:block/empty"
+    }
+  }
+}

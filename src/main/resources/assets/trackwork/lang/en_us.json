@@ -1,0 +1,36 @@
+{
+  "block.trackwork.suspension_track": "Suspension Track",
+  "block.trackwork.med_suspension_track": "Medium Suspension Track",
+  "block.trackwork.large_suspension_track" : "Large Suspension Track",
+  "block.trackwork.phys_track" : "Sprocket Track",
+  "block.trackwork.med_phys_track" : "Medium  Sprocket Track",
+  "block.trackwork.large_phys_track" : "Large Sprocket Track",
+  "block.trackwork.track_level_controller" : "Suspension Controller",
+  "block.trackwork.simple_wheel": "Simple Wheel",
+  "block.trackwork.simple_wheel_part": "Simple Wheel Part",
+
+  "itemGroup.trackwork": "Trackwork",
+  "item.trackwork.track_tool_kit" : "Track Toolkit",
+  "item.trackwork.track_tool_kit.tooltip.behaviour1" : "Makes the track suspension _less bouncy_, but could do worse on rough terrain! _Sneak_ to make it less stiff.",
+  "item.trackwork.track_tool_kit.tooltip.behaviour2" : "_Move wheels_ back and forth depending on where you click.",
+  "item.trackwork.track_tool_kit.tooltip.condition1" : "When the stiffness gauge is used,",
+  "item.trackwork.track_tool_kit.tooltip.condition2" : "When the power wrench is used,",
+  "item.trackwork.track_tool_kit.tooltip.summary" : "Multiple tools for working with tracks, packed into one convenient kit!",
+
+  "death.attack.trackwork.track" : "%1$s became roadkill",
+  "death.attack.trackwork.track.player" : "%1$s was thrown under the bus by %2$s",
+
+  "trackwork.ponder.tracks.header" : "Building Tracks 101",
+  "trackwork.ponder.tracks.text_1" : "Disclaimer: Tracks only work on assembled VS2 ships!",
+  "trackwork.ponder.tracks.text_2" : "Just like chaindrive blocks, ",
+  "trackwork.ponder.tracks.text_3" : "tracks are built in a row.",
+  "trackwork.ponder.tracks.text_4" : "Tracks are powered via connected sprockets.",
+
+  "trackwork.ponder.wheels.header" : "Building Wheels 101",
+  "trackwork.ponder.wheels.text_1" : "Disclaimer: Wheels only work on assembled VS2 ships!",
+  "trackwork.ponder.wheels.text_2" : "Wheels are placed like, well, wheels",
+  "trackwork.ponder.wheels.text_3" : "Drive the wheels via the rib side,",
+  "trackwork.ponder.wheels.text_4" : "Or don't connect them, which lets the wheel spin freely.",
+  "trackwork.ponder.wheels.text_5" : "Power a wheel with redstone to steer it,",
+  "trackwork.ponder.wheels.text_6" : "and the opposite side will automatically follow."
+}

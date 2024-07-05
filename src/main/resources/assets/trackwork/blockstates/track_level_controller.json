@@ -1,0 +1,15 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "create:block/encased_chain_drive/single",
+      "y": 90
+    },
+    "axis=y": {
+      "model": "create:block/encased_chain_drive/single",
+      "x": 90
+    },
+    "axis=z": {
+      "model": "create:block/encased_chain_drive/single"
+    }
+  }
+}

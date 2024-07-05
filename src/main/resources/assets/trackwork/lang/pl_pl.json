@@ -1,0 +1,36 @@
+{
+  "block.trackwork.suspension_track": "Koło Nośne",
+  "block.trackwork.med_suspension_track": "Średnie Koło Nośne",
+  "block.trackwork.large_suspension_track" : "Duże Koło Nośne",
+  "block.trackwork.phys_track" : "Koło Napędowe",
+  "block.trackwork.med_phys_track" : "Średnie Koło Napędowe",
+  "block.trackwork.large_phys_track" : "Duże Koło Napędowe",
+  "block.trackwork.track_level_controller" : "Kontroler Zawieszenia",
+  "block.trackwork.simple_wheel": "Proste Koło",
+  "block.trackwork.simple_wheel_part": "Część Prostego Koła",
+
+  "itemGroup.trackwork": "Trackwork",
+  "item.trackwork.track_tool_kit" : "Narzędzia Zawieszenia",
+  "item.trackwork.track_tool_kit.tooltip.behaviour1" : "Powoduje, że zawieszenie gąsienic jest mniej sprężyste, ale może wtedy gorzej działać na wybojowym terenie! Skradaj się aby zmniejszyć jej twardość.",
+  "item.trackwork.track_tool_kit.tooltip.behaviour2" : "Rusza kołami tam i z powrotem w zależności gdzie klikasz.",
+  "item.trackwork.track_tool_kit.tooltip.condition1" : "Kiedy miernik twardości jest użyty,",
+  "item.trackwork.track_tool_kit.tooltip.condition2" : "Kiedy klucz udarowy jest użyty",
+  "item.trackwork.track_tool_kit.tooltip.summary" : "Wiele narzędzi do pracowania z gąsienicami w jednym zestawie!",
+
+  "death.attack.trackwork.track" : "%1$s został potrącony",
+  "death.attack.trackwork.track.player" : "%1$s został wrzucony pod autobus przez %2$s",
+
+  "trackwork.ponder.tracks.header" : "Budowanie Gąsienic 101",
+  "trackwork.ponder.tracks.text_1" : "Uwaga: Gąsienice działają tylko na obiektach zmienionych w statki VS2!",
+  "trackwork.ponder.tracks.text_2" : "Tak jak Izolowany przekaźnik łańcuchowy, ",
+  "trackwork.ponder.tracks.text_3" : "Gąsienice są budowane w lini.",
+  "trackwork.ponder.tracks.text_4" : "Gąsienice są zasilane przez podłączone Koła Nośne.",
+
+  "trackwork.ponder.wheels.header" : "Budowanie Kół 101",
+  "trackwork.ponder.wheels.text_1" : "Uwaga: Gąsienice działają tylko na obiektach zmienionych w statki VS2!",
+  "trackwork.ponder.wheels.text_2" : "Koła sie stawia, no jak koła",
+  "trackwork.ponder.wheels.text_3" : "Napedzaj koła poprzez wewnętrzną strone,",
+  "trackwork.ponder.wheels.text_4" : "Albo ich nie podłączaj, co pozwala im samowolnie się kręcić.",
+  "trackwork.ponder.wheels.text_5" : "Zasil koło używając redstone aby nim skręcać,",
+  "trackwork.ponder.wheels.text_6" : "po czym druga strona automatycznie skręci"
+}

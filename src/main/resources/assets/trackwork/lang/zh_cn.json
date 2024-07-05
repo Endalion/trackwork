@@ -1,0 +1,36 @@
+{
+  "block.trackwork.suspension_track": "悬吊履带",
+  "block.trackwork.med_suspension_track": "中型悬吊履带",
+  "block.trackwork.large_suspension_track" : "大型悬吊履带",
+  "block.trackwork.phys_track" : "链轮履带",
+  "block.trackwork.med_phys_track" : "中型链轮履带",
+  "block.trackwork.large_phys_track" : "大型链轮履带",
+  "block.trackwork.track_level_controller" : "悬吊控制器",
+  "block.trackwork.simple_wheel": "独立轮",
+  "block.trackwork.simple_wheel_part": "独立轮部件",
+
+  "itemGroup.trackwork": "Trackwork",
+  "item.trackwork.track_tool_kit" : "工具包",
+  "item.trackwork.track_tool_kit.tooltip.behaviour1" : "可以调整悬挂的_硬度_，但小心越野的性能!",
+  "item.trackwork.track_tool_kit.tooltip.behaviour2" : "会在履带横过把_轮子移动_。",
+  "item.trackwork.track_tool_kit.tooltip.condition1" : "当弹簧压力表备用，",
+  "item.trackwork.track_tool_kit.tooltip.condition2" : "当電動工具备用，",
+  "item.trackwork.track_tool_kit.tooltip.summary" : "多种履带备用的工具, 包在一套方便的工具包里！",
+
+  "death.attack.trackwork.track" : "%1$s 被路杀",
+  "death.attack.trackwork.track.player" : "%1$s 被 %2$s 丢下车底",
+
+  "trackwork.ponder.tracks.header" : "摆放履带101",
+  "trackwork.ponder.tracks.text_1" : "注意: 履带只有放在物理结构上才能够工作！",
+  "trackwork.ponder.tracks.text_2" : "就像链式传动箱, ",
+  "trackwork.ponder.tracks.text_3" : "履带是连为一条。",
+  "trackwork.ponder.tracks.text_4" : "履带需要在链轮接入旋转传动力。",
+
+  "trackwork.ponder.wheels.header" : "摆放独立轮101",
+  "trackwork.ponder.wheels.text_1" : "注意: 独立轮只有放在物理结构上才能够工作！",
+  "trackwork.ponder.wheels.text_2" : "独立轮的建法就像，那, 轮一样",
+  "trackwork.ponder.wheels.text_3" : "接入动力的车轮可以被控制旋转，",
+  "trackwork.ponder.wheels.text_4" : "未接入传动方块时轮子可以自由滚动。",
+  "trackwork.ponder.wheels.text_5" : "独立轮方块受到红石信号后会向相对应的方向转向。",
+  "trackwork.ponder.wheels.text_6" : "同时也会关联到另一边的独立轮。"
+}

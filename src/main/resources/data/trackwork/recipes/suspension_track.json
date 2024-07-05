@@ -1,0 +1,29 @@
+{
+  "type": "create:mechanical_crafting",
+  "pattern": [
+    "  S  ",
+    " PPP ",
+    " PCP ",
+    " PPP ",
+    " BBB "
+  ],
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "C": {
+      "item": "create:cogwheel"
+    },
+    "B": {
+      "item": "create:belt_connector"
+    },
+    "S": {
+      "item": "create:mechanical_piston"
+    }
+  },
+  "result": {
+    "item": "trackwork:suspension_track",
+    "count": 2
+  },
+  "acceptMirrored": false
+}

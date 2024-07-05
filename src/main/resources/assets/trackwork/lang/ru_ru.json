@@ -1,0 +1,36 @@
+{
+  "block.trackwork.suspension_track": "Подвеска Гусениц",
+  "block.trackwork.med_suspension_track": "Средняя Подвеска Гусениц",
+  "block.trackwork.large_suspension_track" : "Большая Подвеска Гусениц",
+  "block.trackwork.phys_track" : "Ведущее Колесо",
+  "block.trackwork.med_phys_track" : "Среднее Ведущее Колесо",
+  "block.trackwork.large_phys_track" : "Большое Ведущее Колесо",
+  "block.trackwork.track_level_controller" : "Регулятор Подвески",
+  "block.trackwork.simple_wheel": "Простое Колесо",
+  "block.trackwork.simple_wheel_part": "Часть Простого Колеса",
+
+  "itemGroup.trackwork": "Trackwork",
+  "item.trackwork.track_tool_kit" : "Инструментарий для Гусениц",
+  "item.trackwork.track_tool_kit.tooltip.behaviour1" : "Делает подвеску гусениц _менее упругой_, но на грубой местности может вести себя хуже! _Присядьте_ что-бы сделать её менее жёсткой.",
+  "item.trackwork.track_tool_kit.tooltip.behaviour2" : "_Двигает колёса_ вперёд и назад в зависимости от того куда вы кликнули.",
+  "item.trackwork.track_tool_kit.tooltip.condition1" : "Когда использован измеритель жёсткости,",
+  "item.trackwork.track_tool_kit.tooltip.condition2" : "Когда используется электроключ,",
+  "item.trackwork.track_tool_kit.tooltip.summary" : "Несколько инструментов для работы над гусеницами, сложены в один набор!",
+
+  "death.attack.trackwork.track" : "%1$s превратился в лепёшку",
+  "death.attack.trackwork.track.player" : "%1$s был брошен под автобус игроком %2$s",
+
+  "trackwork.ponder.tracks.header" : "Установка гусениц 101",
+  "trackwork.ponder.tracks.text_1" : "Внимание: Гусеницы работают на собранных VS2 конструкциях!",
+  "trackwork.ponder.tracks.text_2" : "Прямо как цепной привод, ",
+  "trackwork.ponder.tracks.text_3" : "гусеницы ставятся в ряд.",
+  "trackwork.ponder.tracks.text_4" : "Гусеницы приводятся в движение через подключенные ведущие колёса.",
+
+  "trackwork.ponder.wheels.header" : "Установка колёс 101",
+  "trackwork.ponder.wheels.text_1" : "Внимание: Колёса работают на собранных VS2 конструкциях!",
+  "trackwork.ponder.wheels.text_2" : "Колёса устанавливаются, ну, как колёса",
+  "trackwork.ponder.wheels.text_3" : "Управление колёс передаётся через колёсную базу,",
+  "trackwork.ponder.wheels.text_4" : "Или не подключайте их, что позволит колесу вращаться свободно.",
+  "trackwork.ponder.wheels.text_5" : "Подайте редстоун сигнал, чтобы управлять им,",
+  "trackwork.ponder.wheels.text_6" : "и противоположная сторона автоматически последует за ней."
+}

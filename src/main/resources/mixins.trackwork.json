@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "edn.stratodonut.trackwork.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MixinRotationPropagator",
+    "MixinServerGamePacketListenerImplDuck"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8",
+  "refmap": "mixins.trackwork.refmap.json"
+}

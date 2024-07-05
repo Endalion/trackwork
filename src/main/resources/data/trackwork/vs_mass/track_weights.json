@@ -1,0 +1,37 @@
+[
+  {
+    "block": "trackwork:suspension_track",
+    "mass": 350.0,
+    "friction": 0.0
+  },
+  {
+    "block": "trackwork:phys_track",
+    "mass": 175.0,
+    "friction": 0.0
+  },
+  {
+    "block": "trackwork:med_phys_track",
+    "mass": 525.0,
+    "friction": 0.0
+  },
+  {
+    "block": "trackwork:med_suspension_track",
+    "mass": 262.0,
+    "friction": 0.0
+  },
+  {
+    "block": "trackwork:large_suspension_track",
+    "mass": 1050.0,
+    "friction": 0.0
+  },
+  {
+    "block": "trackwork:large_phys_track",
+    "mass": 525.0,
+    "friction": 0.0
+  },
+  {
+    "block": "trackwork:simple_wheel",
+    "mass": 525.0,
+    "friction": 0.0
+  }
+]

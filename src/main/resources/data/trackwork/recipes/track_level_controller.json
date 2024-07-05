@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " D ",
+    " L ",
+    " P "
+  ],
+  "key": {
+    "D": {
+      "item": "create:encased_chain_drive"
+    },
+    "L": {
+      "item": "create:electron_tube"
+    },
+    "P": {
+      "item": "create:mechanical_piston"
+    }
+  },
+  "result": {
+    "item": "trackwork:track_level_controller",
+    "count": 1
+  }
+}

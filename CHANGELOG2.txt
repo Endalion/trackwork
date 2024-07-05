@@ -1,0 +1,104 @@
+* 1b
+  Fixed the mod description
+  Fixed flywheel rendering (I don't know glsl)
+* 1c
+  Added Creative menu tab, Fixed Item models
+  Added Particles
+* 1d
+  Added large track blocks which are faster (super scuffed)
+  Wrenching track blocks now toggles wheel to be displayed/not
+  Suspension no longer has shaft connection
+  Completely deny vertical placement
+  Fixed some loading and physics-assembly bugs (pls test)
+* 1e
+  Disabled spacelaunch mechanic
+* 1f
+  Fixed rendering bug for tiny tracks
+  Increased block hardness
+  Added proper names to track blocks
+  Fixed Phys track blocks sometimes breaking on load
+  Added slow swimming through water for tracks
+  Added entity damage when tracks moving over (through)
+  Added track wrench to adjust suspension stiffness
+  Added track level controller to adjust suspension height
+  Added significant Kinetic Stress for heavy (>1000ton) ships, config defaults to Off
+* 1g
+  Fixed sprocket climbing ability, should now be OP af
+  Added dev_reset_stick to undo a bug caused by version 1f
+  Reset suspension tilt (but not height) when level controller is broken
+* 1h
+  Corrected the name of track damage to entities
+  Fixed suspension behaviour when not on the ground
+  Fixed schematic preview rendering
+  Fixed track rendering on blank wheels
+  Fixed tracks not moving along with ships they rest on (kinda buggy?)
+  Fixed sprockets being wrenched when they shouldn't be
+  Increased Track render distance
+  Adjusted stress weight scaling
+  Replaced track wrench with track toolkit
+  Added track toolkit item; A multi-tool for track adjustments
+  Added ability to adjust suspension wheel spacing using toolkit
+  Added explosions throwing track (scuffed), config defaults to Off
+  Added configuration for stress multiplier, track maximum RPM, and track render distance
+  Added wheel,sprocket,belt textures for resource pack usage
+  Added Medium size tracks
+* 1h1
+  Fixed track rendering again fml
+* 1h2
+  Fixed stress weight scaling being way off
+  Fixed crash when tracks run over certain modded blocks
+  Improved swimming speed
+  Added summary of usage for toolkit
+* 1h3
+  Fixed bug from 1h2 which caused tracks to spin forever
+* 1j
+  Greatly improved offroad performance, though suspension is bouncier as a result
+  Fixed ponder for the tracks to actually help
+  Increased significantly Roadkill damage (10 hearts with default create config)
+  Added push feature for Mobs (but not players yet), should get pushed away from tracks even when stationary
+  Added recipes based on pixel_protogen's patch, please send feedback I haven't played survival in 5 years
+  Added Wheels (alpha)
+* 1k
+  Fixed wheel model size
+  Fixed wheel model facing the wrong direction, spinning the wrong way when free
+  Fixed wheels being placed vertically when they should never be
+  Fixed wheels schematic preview
+  Adjusted suspension model slightly
+  Increased wheel friction to usable levels
+  Added wheel Ponder please like, subscribe and hit the bell notification button for more bad ponders
+  Added wheel recipe
+* 1m
+  Improved wheel suspension animation
+  Strengthened wheel suspension springiness
+  Fixed minor wheel model artifact
+  Fixed wheel propulsion in water
+  Reduced the chance of wheels causing a rapid unplanned space launch
+  Fix wheel suspension freaking out sometimes
+* 1n
+  Fixed minor artifact on wheel model that nobody saw somehow
+  Fixed wheel recipe
+  Fixed terrible skill issue bug which caused wheels to jitter
+  Fixed wheel suspension animation being wrong half the time
+  Increased sideslip traction of wheels
+  Adjusted wheel traction to decrease with slope
+* 1p
+  Fixed wheels not having kinetic stress when enabled
+  Fixed wheel failure when spring is compressed too hard
+  Fixed a rare bug where tracks would cause the ship to clip into the ground (thanks Shalz)
+  Fixed particle texture when track/wheel blocks are broken
+  Fixed blocks not dropping anything when broken
+  Fixed freespin wheel animation
+  Adjusted track width to be narrower to reduce visual artifacts
+  Modified power wrench model and texture
+  Revamped wheel suspension model and animation
+  Rebalanced recipe for wheels and tracks because clearly I know how to balance survival not having played in 5 years
+  Enabled wheels to be moved by toolkit power wrench
+  Added sounds for toolkit and wheel suspension
+  Added wheel part block for decoration and sub-recipe
+* 1.0.0
+  Fixed missing localisation for wheel part
+  Fixed a super long-standing issue with small sprockets poking through the belt and I didn't fix it earlier because the math killed me once and I feared the day I go back there thank god it was just one constant
+  Improved wheel ponder animation
+  Slowed down ponders to improve readability
+  Added JP, RU, PL, ZH_CN translations
+
