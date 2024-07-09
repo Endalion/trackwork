@@ -3,7 +3,7 @@ package edn.stratodonut.trackwork.tracks.forces;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import edn.stratodonut.trackwork.tracks.data.SimpleWheelData;
 import kotlin.jvm.functions.Function1;
 import net.minecraft.core.BlockPos;

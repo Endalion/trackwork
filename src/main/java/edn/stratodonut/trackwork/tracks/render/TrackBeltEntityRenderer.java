@@ -34,10 +34,10 @@ public class TrackBeltEntityRenderer extends EntityRenderer<TrackBeltEntity> {
 
         BlockPos parent = e.getParentPos();
         if (parent == null) return;
-        if (!(e.level.getBlockEntity(parent) instanceof ITrackPointProvider)) return;
+        if (!(e.level().getBlockEntity(parent) instanceof ITrackPointProvider)) return;
         Direction iterator = iterateOverBelt(e, parent);
         BlockPos bp = parent;
-        BlockEntity be = e.level.getBlockEntity(parent);
+        BlockEntity be = e.level().getBlockEntity(parent);
         while (be instanceof ITrackPointProvider t) {
             List<SuperByteBuffer> buf = drawTrackPoint(t, be.getBlockState(), partialTick);
             BlockPos finalBp = bp;
@@ -48,7 +48,7 @@ public class TrackBeltEntityRenderer extends EntityRenderer<TrackBeltEntity> {
             });
 
             bp = bp.relative(iterator);
-            be = e.level.getBlockEntity(bp);
+            be = e.level().getBlockEntity(bp);
         }
     }
 
@@ -75,7 +75,7 @@ public class TrackBeltEntityRenderer extends EntityRenderer<TrackBeltEntity> {
     }
 
     public static Direction iterateOverBelt(TrackBeltEntity e, BlockPos start) {
-        BlockState state = e.level.getBlockState(start);
+        BlockState state = e.level().getBlockState(start);
         TrackBaseBlock.TrackPart part = state.getValue(TrackBaseBlock.PART);
         return Direction.get(part == TrackBaseBlock.TrackPart.START ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE, state.getValue(TrackBaseBlock.AXIS) == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X);
     }

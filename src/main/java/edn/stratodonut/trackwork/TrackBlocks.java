@@ -21,20 +21,21 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
-import static edn.stratodonut.trackwork.TrackworkCreativeTabs.TRACKWORK_CREATIVE_TAB;
 import static edn.stratodonut.trackwork.TrackworkMod.REGISTRATE;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 public class TrackBlocks {
     static {
-        REGISTRATE.creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
+        REGISTRATE.setCreativeTab(AllCreativeModeTabs.BASE_CREATIVE_TAB);
     }
 
     // TODO: More Freeform Rigid tracks (like a massive wall of blocks)
@@ -43,83 +44,83 @@ public class TrackBlocks {
     public static final BlockEntry<LargeSuspensionTrackBlock> LARGE_SUSPENSION_TRACK =
             REGISTRATE.block("large_suspension_track", LargeSuspensionTrackBlock::new)
                     .initialProperties(() -> Blocks.RAIL)
-                    .properties(p -> p.noOcclusion().color(MaterialColor.PODZOL).noCollission().strength(12.0f).sound(SoundType.METAL))
+                    .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL).noCollission().strength(12.0f).sound(SoundType.METAL))
                     .transform(BlockStressDefaults.setNoImpact())
                     .transform(pickaxeOnly())
                     .blockstate((c, p) -> new ChainDriveGenerator((state, suffix) -> p.models()
                             .getExistingFile(p.modLoc("block/" + c.getName() + "/" + suffix))).generate(c, p))
-                    .item().tab(() -> TRACKWORK_CREATIVE_TAB)
+                    .item()
                     .transform(customItemModel())
                     .register();
     public static final BlockEntry<MedSuspensionTrackBlock> MED_SUSPENSION_TRACK =
             REGISTRATE.block("med_suspension_track", MedSuspensionTrackBlock::new)
                     .initialProperties(() -> Blocks.RAIL)
-                    .properties(p -> p.noOcclusion().color(MaterialColor.PODZOL).noCollission().strength(12.0f).sound(SoundType.METAL))
+                    .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL).noCollission().strength(12.0f).sound(SoundType.METAL))
                     .transform(BlockStressDefaults.setNoImpact())
                     .transform(pickaxeOnly())
 //                    .blockstate((c, p) -> new ChainDriveGenerator((state, suffix) -> p.models()
 //                            .getExistingFile(p.modLoc("block/" + c.getName() + "/" + suffix))).generate(c, p))
-                    .item().tab(() -> TRACKWORK_CREATIVE_TAB)
+                    .item()
                     .transform(customItemModel())
                     .register();
     public static final BlockEntry<SuspensionTrackBlock> SUSPENSION_TRACK =
             REGISTRATE.block("suspension_track", SuspensionTrackBlock::new)
                     .initialProperties(() -> Blocks.RAIL)
-                    .properties(p -> p.noOcclusion().color(MaterialColor.PODZOL).noCollission().strength(12.0f).sound(SoundType.METAL))
+                    .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL).noCollission().strength(12.0f).sound(SoundType.METAL))
                     .transform(BlockStressDefaults.setNoImpact())
                     .transform(pickaxeOnly())
                     .blockstate((c, p) -> new ChainDriveGenerator((state, suffix) -> p.models()
                             .getExistingFile(p.modLoc("block/" + c.getName() + "/" + suffix))).generate(c, p))
-                    .item().tab(() -> TRACKWORK_CREATIVE_TAB)
+                    .item()
                     .transform(customItemModel())
                     .register();
 
     public static final BlockEntry<LargePhysEntityTrackBlock> LARGE_PHYS_TRACK =
             REGISTRATE.block("large_phys_track", LargePhysEntityTrackBlock::new)
                     .initialProperties(() -> Blocks.RAIL)
-                    .properties(p -> p.noOcclusion().color(MaterialColor.PODZOL).noCollission().strength(14.0f).sound(SoundType.METAL))
+                    .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL).noCollission().strength(14.0f).sound(SoundType.METAL))
                     .transform(BlockStressDefaults.setNoImpact())
                     .transform(pickaxeOnly())
                     .blockstate((c, p) -> new ChainDriveGenerator((state, suffix) -> p.models()
                             .getExistingFile(p.modLoc("block/" + c.getName() + "/" + suffix))).generate(c, p))
                     .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
-                    .item().tab(() -> TRACKWORK_CREATIVE_TAB)
+                    .item()
                     .transform(customItemModel())
                     .register();
     public static final BlockEntry<MedPhysEntityTrackBlock> MED_PHYS_TRACK =
             REGISTRATE.block("med_phys_track", MedPhysEntityTrackBlock::new)
                     .initialProperties(() -> Blocks.RAIL)
-                    .properties(p -> p.noOcclusion().color(MaterialColor.PODZOL).noCollission().strength(14.0f).sound(SoundType.METAL))
+                    .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL).noCollission().strength(14.0f).sound(SoundType.METAL))
                     .transform(BlockStressDefaults.setNoImpact())
                     .transform(pickaxeOnly())
 //                    .blockstate((c, p) -> new ChainDriveGenerator((state, suffix) -> p.models()
 //                            .getExistingFile(p.modLoc("block/" + c.getName() + "/" + suffix))).generate(c, p))
                     .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
-                    .item().tab(() -> TRACKWORK_CREATIVE_TAB)
+                    .item()
                     .transform(customItemModel())
                     .register();
     public static final BlockEntry<PhysEntityTrackBlock> PHYS_TRACK =
             REGISTRATE.block("phys_track", PhysEntityTrackBlock::new)
                     .initialProperties(() -> Blocks.RAIL)
-                    .properties(p -> p.noOcclusion().color(MaterialColor.PODZOL).noCollission().strength(14.0f).sound(SoundType.METAL))
+                    .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL).noCollission().strength(14.0f).sound(SoundType.METAL))
                     .transform(BlockStressDefaults.setNoImpact())
                     .transform(pickaxeOnly())
                     .blockstate((c, p) -> new ChainDriveGenerator((state, suffix) -> p.models()
                             .getExistingFile(p.modLoc("block/" + c.getName() + "/" + suffix))).generate(c, p))
                     .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
-                    .item().tab(() -> TRACKWORK_CREATIVE_TAB)
+                    .item()
                     .transform(customItemModel())
                     .register();
 
     public static final BlockEntry<WheelBlock> SIMPLE_WHEEL =
             REGISTRATE.block("simple_wheel", WheelBlock::new)
                     .initialProperties(() -> Blocks.RAIL)
-                    .properties(p -> p.noOcclusion().color(MaterialColor.PODZOL).noCollission().strength(7.0f).sound(SoundType.METAL))
+                    .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL).noCollission().strength(7.0f).sound(SoundType.METAL))
                     .transform(BlockStressDefaults.setNoImpact())
                     .transform(pickaxeOnly())
                     .blockstate(BlockStateGen.horizontalBlockProvider(true))
 //                    .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
-                    .item().tab(() -> TRACKWORK_CREATIVE_TAB)
+                    .item()
                     .transform(customItemModel())
                     .register();
 
@@ -131,19 +132,19 @@ public class TrackBlocks {
                         }
                     })
                     .initialProperties(() -> Blocks.WHITE_WOOL)
-                    .properties(p -> p.noOcclusion().color(MaterialColor.PODZOL).strength(2.0f, 7.0f).sound(SoundType.WOOL))
-                    .item().tab(() -> TRACKWORK_CREATIVE_TAB)
+                    .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL).strength(2.0f, 7.0f).sound(SoundType.WOOL))
+                    .item()
                     .transform(customItemModel())
                     .register();
 
     public static final BlockEntry<TrackAdjusterBlock> TRACK_LEVEL_CONTROLLER =
             REGISTRATE.block("track_level_controller", TrackAdjusterBlock::new)
                     .initialProperties(SharedProperties::stone)
-                    .properties(p -> p.noOcclusion().color(MaterialColor.PODZOL))
+                    .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL))
                     .transform(BlockStressDefaults.setNoImpact())
                     .transform(axeOrPickaxe())
                     .blockstate(BlockStateGen.axisBlockProvider(true))
-                    .item().tab(() -> TRACKWORK_CREATIVE_TAB)
+                    .item()
                     .transform(customItemModel())
                     .register();
 

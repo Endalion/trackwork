@@ -1,49 +1,46 @@
 modLoader="javafml" #mandatory
 
-loaderVersion="[40,)"
+loaderVersion="${loader_version_range}"
 license="MIT License"
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
 [[mods]]
-modId="trackwork"
-version="${version}" #mandatory
-displayName="Trackwork Mod" #mandatory
+modId="${mod_id}"
+version="${mod_version}" #mandatory
+displayName="${mod_name}" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="logo.png" #optional
 credits="Create Mod; Valkyrien Skies 2" #optional
-authors="[Endalion]" #optional
-description='''
-Adds track blocks that work with VS2 physics.
-Warranty void if suspension springs are compressed
-'''
+authors="${mod_authors}" #optional
+description='''${mod_authors}'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.trackwork]] #optional
+[[dependencies."${mod_id}"]] #optional
     # the modid of the dependency
     modId="forge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[40.2,)" #mandatory
+    versionRange="${forge_version_range}" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
 # Here's another dependency
-[[dependencies.trackwork]]
+[[dependencies."${mod_id}"]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "1.18.2"
+    versionRange = "${minecraft_version_range}"
     ordering = "NONE"
     side = "BOTH"
 
-[[dependencies.trackwork]]
+[[dependencies."${mod_id}"]]
     modId="valkyrienskies"
     mandatory=true
     versionRange="[2,)"
     ordering="AFTER"
     side="BOTH"
-[[dependencies.trackwork]]
+[[dependencies."${mod_id}"]]
     modId = "create"
     mandatory = true
     versionRange = "[0.5.1,)"

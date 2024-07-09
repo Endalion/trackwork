@@ -6,19 +6,17 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import edn.stratodonut.trackwork.items.ControllerResetStick;
 import edn.stratodonut.trackwork.items.TrackToolkit;
 
-import static edn.stratodonut.trackwork.TrackworkCreativeTabs.TRACKWORK_CREATIVE_TAB;
 import static edn.stratodonut.trackwork.TrackworkMod.REGISTRATE;
 
 public class TrackworkItems {
     static {
-        REGISTRATE.creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
+        REGISTRATE.setCreativeTab(AllCreativeModeTabs.BASE_CREATIVE_TAB);
     }
 
     public static final ItemEntry<TrackToolkit> TRACK_TOOL_KIT =
             REGISTRATE.item("track_tool_kit", TrackToolkit::new)
                     .properties(p -> p.stacksTo(1))
                     .model(AssetLookup.itemModelWithPartials())
-                    .tab(() -> TRACKWORK_CREATIVE_TAB)
                     .register();
 
     public static final ItemEntry<ControllerResetStick> CONTROL_RESET_STICK =

@@ -40,12 +40,11 @@ public class TrackworkMod
         REGISTRATE.registerEventListeners(modEventBus);
 
         TrackworkConfigs.register(modLoadingContext);
-
+        TrackCreativeTabs.register(modEventBus);
         TrackworkItems.register();
         TrackBlocks.register();
         TrackBlockEntityTypes.register();
         TrackEntityTypes.register();
-        TrackworkCreativeTabs.init();
         TrackPackets.registerPackets();
         TrackSounds.register(modEventBus);
 

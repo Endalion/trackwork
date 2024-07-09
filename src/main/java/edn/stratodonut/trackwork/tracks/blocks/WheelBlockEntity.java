@@ -2,6 +2,7 @@ package edn.stratodonut.trackwork.tracks.blocks;
 
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.foundation.damageTypes.CreateDamageSources;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import edn.stratodonut.trackwork.TrackPackets;
 import edn.stratodonut.trackwork.TrackworkConfigs;
@@ -116,7 +117,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
         if (this.level.isClientSide && this.ship.get() != null && Math.abs(this.getSpeed()) > 64) {
             Vector3d pos = toJOML(Vec3.atBottomCenterOf(this.getBlockPos()));
             Vector3dc ground = VSGameUtilsKt.getWorldCoordinates(this.level, this.getBlockPos(), pos.sub(UP.mul(this.wheelTravel * 1.2, new Vector3d())));
-            BlockPos blockpos = new BlockPos(toMinecraft(ground));
+            BlockPos blockpos = BlockPos.containing(toMinecraft(ground));
             BlockState blockstate = this.level.getBlockState(blockpos);
             // Is this safe without calling BlockState::addRunningEffects?
             if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
@@ -177,7 +178,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
 
                 forceVec = clipResult.trackTangent.mul(this.wheelRadius / 0.5, new Vector3d());
                 if (forceVec.lengthSquared() == 0) {
-                    BlockState b = this.level.getBlockState(new BlockPos(worldSpaceStart));
+                    BlockState b = this.level.getBlockState(BlockPos.containing(worldSpaceStart));
                     if (b.getFluidState().is(FluidTags.WATER)) {
                         forceVec = ship.getTransform().getShipToWorldRotation().transform(getActionVec3d(axis, 1)).mul(this.wheelRadius / 0.5).mul(0.2);
                     }
@@ -222,7 +223,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
                         ((MSGPLIDuck) p.connection).tallyho$setAboveGroundTickCount(0);
                     }
                     Vec3 relPos = e.position().subtract(worldPos);
-                    if (relPos.horizontalDistanceSqr() < 0.25*0.25 || Math.abs(this.getSpeed()) > 1) e.hurt(SuspensionTrackBlock.damageSourceTrack, 3 * AllConfigs.server().kinetics.crushingDamage.get());
+                    if (relPos.horizontalDistanceSqr() < 0.25*0.25 || Math.abs(this.getSpeed()) > 1) e.hurt(CreateDamageSources.crush(this.level), 3 * AllConfigs.server().kinetics.crushingDamage.get());
                 }
             }
         }
