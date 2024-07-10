@@ -118,7 +118,7 @@ public class TrackToolkit extends Item {
                             MutableComponent chatMessage = Lang.text("Adjusted suspension stiffness to ")
                                     .add(Components.literal(String.format("%.2fx", result))).component();
 
-                            player.createCommandSourceStack().sendChatMessage(new OutgoingChatMessage.Disguised(chatMessage), false, ChatType.bind(ChatType.CHAT, player));
+                            player.displayClientMessage(chatMessage, true);
                         }
                         return InteractionResult.SUCCESS;
 
@@ -132,7 +132,7 @@ public class TrackToolkit extends Item {
                             MutableComponent chatMessage = Lang.text("Adjusted suspension stiffness to ")
                                     .add(Components.literal(String.format("%.2fx", result))).component();
 
-                            player.createCommandSourceStack().sendChatMessage(new OutgoingChatMessage.Disguised(chatMessage), false, ChatType.bind(ChatType.CHAT, player));
+                            player.displayClientMessage(chatMessage, true);
                         }
                         return InteractionResult.SUCCESS;
                     }

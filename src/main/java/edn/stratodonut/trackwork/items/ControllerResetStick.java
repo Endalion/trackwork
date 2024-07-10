@@ -37,7 +37,7 @@ public class ControllerResetStick extends Item {
             controller.resetController();
 
             MutableComponent chatMessage = Lang.text("Fix! ").component();
-            player.createCommandSourceStack().sendChatMessage(new OutgoingChatMessage.Disguised(chatMessage), false, ChatType.bind(ChatType.CHAT, player));
+            player.displayClientMessage(chatMessage, true);
         }
 
         return InteractionResult.SUCCESS;
