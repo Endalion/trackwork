@@ -6,8 +6,10 @@ import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import com.simibubi.create.infrastructure.data.CreateDatagen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -47,6 +49,8 @@ public class TrackworkMod
         TrackEntityTypes.register();
         TrackPackets.registerPackets();
         TrackSounds.register(modEventBus);
+
+        modEventBus.addListener(EventPriority.LOWEST, TrackDatagen::gatherData);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> TrackPonders::register);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> TrackworkPartialModels::init);

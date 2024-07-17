@@ -102,3 +102,6 @@
   Slowed down ponders to improve readability
   Added JP, RU, PL, ZH_CN translations
 
+=== 1.20 ===
+* 1.0.1
+  Changed track/wheel run over damage to scale with speed, and be more reliable

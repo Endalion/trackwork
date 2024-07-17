@@ -17,8 +17,8 @@
   "item.trackwork.track_tool_kit.tooltip.condition2" : "Kiedy klucz udarowy jest użyty",
   "item.trackwork.track_tool_kit.tooltip.summary" : "Wiele narzędzi do pracowania z gąsienicami w jednym zestawie!",
 
-  "death.attack.trackwork.track" : "%1$s został potrącony",
-  "death.attack.trackwork.track.player" : "%1$s został wrzucony pod autobus przez %2$s",
+  "death.attack.trackwork.run_over" : "%1$s został potrącony",
+  "death.attack.trackwork.run_over.player" : "%1$s został wrzucony pod autobus przez %2$s",
 
   "trackwork.ponder.tracks.header" : "Budowanie Gąsienic 101",
   "trackwork.ponder.tracks.text_1" : "Uwaga: Gąsienice działają tylko na obiektach zmienionych w statki VS2!",

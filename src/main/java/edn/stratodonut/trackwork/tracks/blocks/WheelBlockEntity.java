@@ -4,6 +4,7 @@ import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.damageTypes.CreateDamageSources;
 import com.simibubi.create.infrastructure.config.AllConfigs;
+import edn.stratodonut.trackwork.TrackDamageSources;
 import edn.stratodonut.trackwork.TrackPackets;
 import edn.stratodonut.trackwork.TrackworkConfigs;
 import edn.stratodonut.trackwork.TrackworkUtil;
@@ -211,7 +212,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
 
                 // Entity Damage
                 // TODO: Players don't get pushed, why?
-                List<LivingEntity> hits = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.getBlockPos().below(), this.getBlockPos()));
+                List<LivingEntity> hits = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.getBlockPos()).expandTowards(0, -1, 0).deflate(0.5));
                 Vec3 worldPos = toMinecraft(ship.getShipToWorld().transformPosition(toJOML(Vec3.atCenterOf(this.getBlockPos()))));;
                 for (LivingEntity e : hits) {
 //                    if (e instanceof ItemEntity)
@@ -223,7 +224,8 @@ public class WheelBlockEntity extends KineticBlockEntity {
                         ((MSGPLIDuck) p.connection).tallyho$setAboveGroundTickCount(0);
                     }
                     Vec3 relPos = e.position().subtract(worldPos);
-                    if (relPos.horizontalDistanceSqr() < 0.25*0.25 || Math.abs(this.getSpeed()) > 1) e.hurt(CreateDamageSources.crush(this.level), 3 * AllConfigs.server().kinetics.crushingDamage.get());
+                    float speed = Math.abs(this.getSpeed());
+                    if (speed > 1) e.hurt(TrackDamageSources.runOver(this.level), (speed / 16f) * AllConfigs.server().kinetics.crushingDamage.get());
                 }
             }
         }

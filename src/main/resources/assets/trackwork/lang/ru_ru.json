@@ -17,8 +17,8 @@
   "item.trackwork.track_tool_kit.tooltip.condition2" : "Когда используется электроключ,",
   "item.trackwork.track_tool_kit.tooltip.summary" : "Несколько инструментов для работы над гусеницами, сложены в один набор!",
 
-  "death.attack.trackwork.track" : "%1$s превратился в лепёшку",
-  "death.attack.trackwork.track.player" : "%1$s был брошен под автобус игроком %2$s",
+  "death.attack.trackwork.run_over" : "%1$s превратился в лепёшку",
+  "death.attack.trackwork.run_over.player" : "%1$s был брошен под автобус игроком %2$s",
 
   "trackwork.ponder.tracks.header" : "Установка гусениц 101",
   "trackwork.ponder.tracks.text_1" : "Внимание: Гусеницы работают на собранных VS2 конструкциях!",
