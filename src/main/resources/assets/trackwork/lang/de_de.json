@@ -1,0 +1,36 @@
+{
+  "block.trackwork.suspension_track": "Federungs-Kette",
+  "block.trackwork.med_suspension_track": "Mittlere Federungs-Kette",
+  "block.trackwork.large_suspension_track" : "Große Federungs-Kette",
+  "block.trackwork.phys_track" : "Kettenrad mit Kette",
+  "block.trackwork.med_phys_track" : "Mittleres Kettenrad mit Kette",
+  "block.trackwork.large_phys_track" : "Großes Kettenrad mit Kette",
+  "block.trackwork.track_level_controller" : "Federungssteuerung",
+  "block.trackwork.simple_wheel": "Einfacher Reifen",
+  "block.trackwork.simple_wheel_part": "Teil eines einfachen Reifens",
+
+  "itemGroup.trackwork": "Trackwork",
+  "item.trackwork.track_tool_kit" : "Ketten Werkzeugset",
+  "item.trackwork.track_tool_kit.tooltip.behaviour1" : "Macht die Kettenfederung _fester_, dies kann Probleme auf unebenen Boden verursachen! _Ducken_ um die Federung weicher einzustellen.",
+  "item.trackwork.track_tool_kit.tooltip.behaviour2" : "_Bewegt die Reifen_ rückwärts und vorwärts, je nachdem an welcher Stelle geklickt wird.",
+  "item.trackwork.track_tool_kit.tooltip.condition1" : "Wenn die Steifheitsanzeige genutzt wird,",
+  "item.trackwork.track_tool_kit.tooltip.condition2" : "Wenn die Power Wrench benutzt wird,",
+  "item.trackwork.track_tool_kit.tooltip.summary" : "Verschiedene Werkzeuge um an den Ketten zu arbeiten, verpackt in einem praktischen Set!",
+
+  "death.attack.trackwork.run_over" : "%1$s ist nun platt wie ein Pfannkuchen",
+  "death.attack.trackwork.run_over.player" : "%1$s wurde plattgewalzt von %2$s",
+
+  "trackwork.ponder.tracks.header" : "Kettenkunde für Anfänger",
+  "trackwork.ponder.tracks.text_1" : "Hinweis: Ketten funktionieren nur an zusammengesetzten VS2 Schiffen!",
+  "trackwork.ponder.tracks.text_2" : "Genau wie Chaindrive Blöcke, ",
+  "trackwork.ponder.tracks.text_3" : "werden Ketten in einer Reihe gebaut.",
+  "trackwork.ponder.tracks.text_4" : "Die Ketten werden über ein verbundenes Kettenrad angetrieben.",
+
+  "trackwork.ponder.wheels.header" : "Reifen montieren für Anfänger",
+  "trackwork.ponder.wheels.text_1" : "Hinweis: Reifen funktionieren nur an zusammengesetzten VS2 Schiffen!",
+  "trackwork.ponder.wheels.text_2" : "Reifen werden, naja, wie Reifen platziert",
+  "trackwork.ponder.wheels.text_3" : "Treibe die Reifen über die innenliegende Seite an,",
+  "trackwork.ponder.wheels.text_4" : "oder verbinde sie nicht, dann können sie sich frei drehen.",
+  "trackwork.ponder.wheels.text_5" : "Nutze ein Redstone Signal um einen Reifen zu lenken,",
+  "trackwork.ponder.wheels.text_6" : "das gegenüberliegende Rad richtet sich automatisch aus."
+}
