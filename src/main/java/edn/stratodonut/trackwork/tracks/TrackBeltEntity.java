@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -35,7 +36,7 @@ public class TrackBeltEntity extends Entity {
     public void tick() {
         super.tick();
 
-        if (!wow && !this.level.isClientSide) {
+        if (!wow && !this.level().isClientSide) {
             entityData.set(PARENT, this.parentPos);
             wow = true;
         }
@@ -68,7 +69,7 @@ public class TrackBeltEntity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 }

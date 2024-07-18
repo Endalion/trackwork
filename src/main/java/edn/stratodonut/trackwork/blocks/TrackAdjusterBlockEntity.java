@@ -1,6 +1,6 @@
 package edn.stratodonut.trackwork.blocks;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
 import edn.stratodonut.trackwork.tracks.forces.PhysicsTrackController;

@@ -15,6 +15,10 @@ import edn.stratodonut.trackwork.tracks.forces.SimpleWheelController;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.OutgoingChatMessage;
+import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,7 +33,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 import org.valkyrienskies.core.api.ships.ServerShip;
 import org.valkyrienskies.core.api.ships.Ship;
@@ -81,7 +85,7 @@ public class TrackToolkit extends Item {
                 case OFFSET -> {
                     BlockEntity be = level.getBlockEntity(pos);
 
-                    AllSoundEvents.WRENCH_ROTATE.playOnServer(player.level, pos, 1, player.getRandom().nextFloat() + .5f);
+                    AllSoundEvents.WRENCH_ROTATE.playOnServer(player.level(), pos, 1, player.getRandom().nextFloat() + .5f);
 //                    player.playSound(;, 1.0f, 0.8f + 0.2f * player.getRandom().nextFloat());
 
                     if (be instanceof SuspensionTrackBlockEntity se) {
@@ -110,8 +114,11 @@ public class TrackToolkit extends Item {
                         if (!level.isClientSide) {
                             PhysicsTrackController controller = PhysicsTrackController.getOrCreate((ServerShip) ship);
                             float result = controller.setDamperCoefficient(isSneaking ? -1f : 1f);
-                            player.sendMessage(Lang.text("Adjusted suspension stiffness to ")
-                                    .add(Components.literal(String.format("%.2fx", result))).component(), Util.NIL_UUID);
+
+                            MutableComponent chatMessage = Lang.text("Adjusted suspension stiffness to ")
+                                    .add(Components.literal(String.format("%.2fx", result))).component();
+
+                            player.displayClientMessage(chatMessage, true);
                         }
                         return InteractionResult.SUCCESS;
 
@@ -121,8 +128,11 @@ public class TrackToolkit extends Item {
                         if (!level.isClientSide) {
                             SimpleWheelController controller = SimpleWheelController.getOrCreate((ServerShip) ship);
                             float result = controller.setDamperCoefficient(isSneaking ? -1f : 1f);
-                            player.sendMessage(Lang.text("Adjusted suspension stiffness to ")
-                                    .add(Components.literal(String.format("%.2fx", result))).component(), Util.NIL_UUID);
+
+                            MutableComponent chatMessage = Lang.text("Adjusted suspension stiffness to ")
+                                    .add(Components.literal(String.format("%.2fx", result))).component();
+
+                            player.displayClientMessage(chatMessage, true);
                         }
                         return InteractionResult.SUCCESS;
                     }
@@ -159,7 +169,7 @@ public class TrackToolkit extends Item {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(SimpleCustomRenderer.create(this, new TrackToolkitRenderer()));
     }
 }

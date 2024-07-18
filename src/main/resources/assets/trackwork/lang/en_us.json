@@ -17,8 +17,8 @@
   "item.trackwork.track_tool_kit.tooltip.condition2" : "When the power wrench is used,",
   "item.trackwork.track_tool_kit.tooltip.summary" : "Multiple tools for working with tracks, packed into one convenient kit!",
 
-  "death.attack.trackwork.track" : "%1$s became roadkill",
-  "death.attack.trackwork.track.player" : "%1$s was thrown under the bus by %2$s",
+  "death.attack.trackwork.run_over" : "%1$s became roadkill",
+  "death.attack.trackwork.run_over.player" : "%1$s was thrown under the bus by %2$s",
 
   "trackwork.ponder.tracks.header" : "Building Tracks 101",
   "trackwork.ponder.tracks.text_1" : "Disclaimer: Tracks only work on assembled VS2 ships!",
@@ -29,7 +29,7 @@
   "trackwork.ponder.wheels.header" : "Building Wheels 101",
   "trackwork.ponder.wheels.text_1" : "Disclaimer: Wheels only work on assembled VS2 ships!",
   "trackwork.ponder.wheels.text_2" : "Wheels are placed like, well, wheels",
-  "trackwork.ponder.wheels.text_3" : "Drive the wheels via the rib side,",
+  "trackwork.ponder.wheels.text_3" : "Drive the wheels via the inner side,",
   "trackwork.ponder.wheels.text_4" : "Or don't connect them, which lets the wheel spin freely.",
   "trackwork.ponder.wheels.text_5" : "Power a wheel with redstone to steer it,",
   "trackwork.ponder.wheels.text_6" : "and the opposite side will automatically follow."

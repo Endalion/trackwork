@@ -37,7 +37,7 @@ public class WheelEntity extends VSPhysicsEntity {
 //        BlockPos p_51253_ = this.blockPosition();
 //        this.level.addParticle(ParticleTypes.SMOKE, (double)p_51253_.getX() + 0.5D + random.nextDouble() / 4.0D * (double)(random.nextBoolean() ? 1 : -1), (double)p_51253_.getY() + 0.4D, (double)p_51253_.getZ() + 0.5D + random.nextDouble() / 4.0D * (double)(random.nextBoolean() ? 1 : -1), 0.0D, 0.005D, 0.0D);
 
-        if (this.level.isClientSide) return;
+        if (this.level().isClientSide) return;
 
         timeout++;
 

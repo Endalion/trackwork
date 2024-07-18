@@ -17,8 +17,8 @@
   "item.trackwork.track_tool_kit.tooltip.condition2" : "当電動工具备用，",
   "item.trackwork.track_tool_kit.tooltip.summary" : "多种履带备用的工具, 包在一套方便的工具包里！",
 
-  "death.attack.trackwork.track" : "%1$s 被路杀",
-  "death.attack.trackwork.track.player" : "%1$s 被 %2$s 丢下车底",
+  "death.attack.trackwork.run_over" : "%1$s 被路杀",
+  "death.attack.trackwork.run_over.player" : "%1$s 被 %2$s 丢下车底",
 
   "trackwork.ponder.tracks.header" : "摆放履带101",
   "trackwork.ponder.tracks.text_1" : "注意: 履带只有放在物理结构上才能够工作！",

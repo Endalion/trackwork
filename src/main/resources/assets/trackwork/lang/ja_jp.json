@@ -17,8 +17,8 @@
   "item.trackwork.track_tool_kit.tooltip.condition2" : "パワーレンチを使用するとき、",
   "item.trackwork.track_tool_kit.tooltip.summary" : "Multiple tools for working with tracks, packed into one convenient kit!",
 
-  "death.attack.trackwork.track" : "%1$s 交通事故にあった",
-  "death.attack.trackwork.track.player" : "%1$s によってトラックの下敷きにされた %2$s",
+  "death.attack.trackwork.run_over" : "%1$s 交通事故にあった",
+  "death.attack.trackwork.run_over.player" : "%1$s によってトラックの下敷きにされた %2$s",
 
   "trackwork.ponder.tracks.header" : "トラック作り101",
   "trackwork.ponder.tracks.text_1" : "免責事項：トラックは組み立てられたVS2シップでのみ動作します！",

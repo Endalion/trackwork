@@ -23,7 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
 public class SuspensionTrackBlock extends TrackBaseBlock<SuspensionTrackBlockEntity> {
-    public static DamageSource damageSourceTrack = new DamageSource("trackwork.track");
+    //public static DamageSource damageSourceTrack = new DamageSource("trackwork.track");
 
     public static final Property<TrackVariant> WHEEL_VARIANT = EnumProperty.create("variant", TrackVariant.class);
 

@@ -1,6 +1,6 @@
 package edn.stratodonut.trackwork.tracks.forces;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import edn.stratodonut.trackwork.tracks.data.PhysTrackData;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;

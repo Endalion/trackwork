@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -38,7 +39,7 @@ public final class WheelEntityRenderer extends EntityRenderer<WheelEntity> {
         if (blockState.getRenderShape() != RenderShape.MODEL) {
             return;
         }
-        Level level = e.getLevel();
+        Level level = e.level();
         if (blockState.equals(level.getBlockState(
                 e.blockPosition()
         )) || blockState.getRenderShape() == RenderShape.INVISIBLE
@@ -66,17 +67,17 @@ public final class WheelEntityRenderer extends EntityRenderer<WheelEntity> {
         double offsetZ = renderTransform.getPositionInWorld().z() - expectedZ;
 
         poseStack.pushPose();
-        BlockPos blockPos = new BlockPos(e.getX(), e.getBoundingBox().maxY, e.getZ());
+        BlockPos blockPos = BlockPos.containing(e.getX(), e.getBoundingBox().maxY, e.getZ());
 
         poseStack.translate(offsetX, offsetY, offsetZ);
-        poseStack.mulPose(VectorConversionsMCKt.toMinecraft(renderTransform.getShipToWorldRotation()));
+        poseStack.mulPose(VectorConversionsMCKt.toFloat(renderTransform.getShipToWorldRotation()));
         poseStack.translate(-0.5, -0.5, -0.5);
         BlockRenderDispatcher blockRenderDispatcher = Minecraft.getInstance().getBlockRenderer();
         blockRenderDispatcher.getModelRenderer().tesselateBlock(
                 level, blockRenderDispatcher.getBlockModel(blockState), blockState, blockPos, poseStack,
                 multiBufferSource.getBuffer(
                         ItemBlockRenderTypes.getMovingBlockRenderType(blockState)
-                ), false, new Random(), blockState.getSeed(BlockPos.ZERO), OverlayTexture.NO_OVERLAY
+                ), false, RandomSource.create(), blockState.getSeed(BlockPos.ZERO), OverlayTexture.NO_OVERLAY
         );
         poseStack.popPose();
         super.render(e, f, partialTick, poseStack, multiBufferSource, i);
