@@ -202,7 +202,7 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
 
                 // Entity Damage
                 // TODO: Players don't get pushed, why?
-                List<LivingEntity> hits = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.getBlockPos().below(), this.getBlockPos()));
+                List<LivingEntity> hits = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.getBlockPos()).expandTowards(0, -1, 0).deflate(0.5));
                 Vec3 worldPos = toMinecraft(ship.getShipToWorld().transformPosition(toJOML(Vec3.atCenterOf(this.getBlockPos()))));;
                 for (LivingEntity e : hits) {
 //                    if (e instanceof ItemEntity)
@@ -214,7 +214,8 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
                         ((MSGPLIDuck) p.connection).tallyho$setAboveGroundTickCount(0);
                     }
                     Vec3 relPos = e.position().subtract(worldPos);
-                    if (relPos.horizontalDistanceSqr() < 0.25*0.25 || Math.abs(this.getSpeed()) > 1) e.hurt(SuspensionTrackBlock.damageSourceTrack, 5 * AllConfigs.server().kinetics.crushingDamage.get());
+                    float speed = Math.abs(this.getSpeed());
+                    if (speed > 1) e.hurt(SuspensionTrackBlock.damageSourceTrack, (speed / 8f) * AllConfigs.server().kinetics.crushingDamage.get());
                 }
             }
         }
