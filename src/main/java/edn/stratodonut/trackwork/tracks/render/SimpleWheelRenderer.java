@@ -113,7 +113,7 @@ public class SimpleWheelRenderer extends KineticBlockEntityRenderer<WheelBlockEn
             wheels.centre()
                     .rotateY(-yRot + be.getSteeringValue() * 30)
 //                    .translate(0, be.getWheelRadius() , 0)
-                    .translate(horizontalOffset, -wheelTravel - 0.5, -wheelTuck)
+                    .translate(horizontalOffset * -axisMult, -wheelTravel - 0.5, -wheelTuck)
                     .rotateZ(-angleForBE)
 //                    .translate(0, 8 / 16f, 0)
                     .unCentre();
