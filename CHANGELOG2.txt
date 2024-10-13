@@ -105,3 +105,19 @@
 === 1.20 ===
 * 1.0.1
   Changed track/wheel run over damage to scale with speed, and be more reliable
+  Added DE translation
+* 1.0.2
+  Significantly reduce packet spam for syncing
+  Fixed Wheel suspension behaviour when tilted
+  Remove swimming ability for wheels
+* 1.0.2b
+  Fix wheel model rotation
+  Fix crash caused by null data
+  Changed wheel renderer to cutout instead of opaque
+  Changed wheel to drop full wheels cause I have no clue how to make it conditional on wrenches
+
+ TODO:
+  - Fix sprocket torque once and for all
+  - [URGENT] FIX FLYWHEEL VERSION RANGE ON 1.18.2
+  - [URGENT] FIX UNKNOWN DATA ISSUE (SEE GITHUB ISSUES)
+
