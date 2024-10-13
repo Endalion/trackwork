@@ -115,6 +115,9 @@
   Fix crash caused by null data
   Changed wheel renderer to cutout instead of opaque
   Changed wheel to drop full wheels cause I have no clue how to make it conditional on wrenches
+* 1.0.2c
+  Added config for wheel pairing distance
+  Fixed wheels not syncing on linked steering, horiz distance changes
 
  TODO:
   - Fix sprocket torque once and for all

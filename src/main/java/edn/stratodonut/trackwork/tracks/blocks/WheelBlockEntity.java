@@ -162,8 +162,8 @@ public class WheelBlockEntity extends KineticBlockEntity {
                 int bestSignal = this.level.getBestNeighborSignal(this.getBlockPos());
                 float oldSteeringValue = this.steeringValue;
                 this.steeringValue = bestSignal / 15f * ((dir.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1));
-                this.onLinkedWheel(wbe -> wbe.linkedSteeringValue = this.steeringValue);
                 float deltaSteeringValue = oldSteeringValue - this.steeringValue;
+                this.onLinkedWheel(wbe -> wbe.setLinkedSteeringValue(this.steeringValue));
 
                 Vector3dc worldSpaceForward = ship.getTransform().getShipToWorldRotation().transform(getActionVec3d(axis, 1), new Vector3d());
                 float horizontalOffset = this.getPointHorizontalOffset();
@@ -209,7 +209,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
 
                 this.prevWheelTravel = this.wheelTravel;
                 this.wheelTravel = newWheelTravel;
-                if (Math.abs(delta) > 0.01f || Math.abs(deltaSteeringValue) > 0.05f) TrackPackets.getChannel().send(packetTarget(), new SimpleWheelPacket(this.getBlockPos(), this.wheelTravel, this.getSteeringValue(), this.horizontalOffset));
+                if (Math.abs(delta) > 0.01f || Math.abs(deltaSteeringValue) > 0.05f) this.syncToClient();
 
                 // Entity Damage
                 // TODO: Players don't get pushed, why?
@@ -235,7 +235,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
     @Override
     public void lazyTick() {
         super.lazyTick();
-        if (this.assembled && !this.level.isClientSide && this.ship.get() != null) TrackPackets.getChannel().send(packetTarget(), new SimpleWheelPacket(this.getBlockPos(), this.wheelTravel, this.getSteeringValue(), this.horizontalOffset));
+        if (this.assembled && !this.level.isClientSide && this.ship.get() != null) this.syncToClient();
     }
 
     public record ClipResult(Vector3dc trackTangent, Vec3 suspensionLength, @Nullable Long groundShipId) { ; }
@@ -271,7 +271,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
 
     protected void onLinkedWheel(Consumer<WheelBlockEntity> action) {
         Direction dir = this.getBlockState().getValue(HORIZONTAL_FACING);
-        for (int i = 1; i <= 6; i++) {
+        for (int i = 1; i <= TrackworkConfigs.server().wheelPairDist.get() + 1; i++) {
             BlockPos bpos = this.getBlockPos().relative(dir, i);
             BlockEntity be = this.level.getBlockEntity(bpos);
             if (be instanceof WheelBlockEntity wbe) {
@@ -279,6 +279,18 @@ public class WheelBlockEntity extends KineticBlockEntity {
                 break;
             }
         }
+    }
+
+    public void setLinkedSteeringValue(float v) {
+        float old = this.getSteeringValue();
+        this.linkedSteeringValue = v;
+        float delta = this.getSteeringValue() - old;
+        if (Math.abs(delta) > 0.05f) this.syncToClient();
+    }
+
+    protected void syncToClient() {
+        if (!this.level.isClientSide) TrackPackets.getChannel().send(packetTarget(),
+                new SimpleWheelPacket(this.getBlockPos(), this.wheelTravel, this.getSteeringValue(), this.horizontalOffset));
     }
 
     protected static Vec3 getActionNormal(Direction.Axis axis) {
@@ -360,6 +372,9 @@ public class WheelBlockEntity extends KineticBlockEntity {
         return Mth.lerp(partialTicks, prevWheelTravel, wheelTravel);
     }
 
+    /**
+    For ponder usage only!
+     **/
     public void setSteeringValue(float value) {
         this.steeringValue = value;
     }
@@ -372,7 +387,11 @@ public class WheelBlockEntity extends KineticBlockEntity {
         Direction.Axis axis = this.getBlockState().getValue(HORIZONTAL_FACING).getAxis();
         double factor = offset.dot(getActionVec3d(axis, 1));
         this.horizontalOffset = Math.clamp(-0.4f, 0.4f, Math.round(factor * 8.0f) / 8.0f);
-        this.onLinkedWheel(wbe -> wbe.horizontalOffset = this.horizontalOffset);
+        this.onLinkedWheel(wbe -> {
+            wbe.horizontalOffset = this.horizontalOffset;
+            wbe.syncToClient();
+        });
+        this.syncToClient();
     }
 
     public float getPointHorizontalOffset() {

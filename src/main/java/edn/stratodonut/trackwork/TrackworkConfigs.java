@@ -22,6 +22,7 @@ public class TrackworkConfigs {
         public final ConfigBase.ConfigFloat stressMult = this.f(1/50f, 0.0f, "stressMultiplier", "Stress multiplier, units SU/(ton x RPM)");
         public final ConfigBase.ConfigInt maxRPM = this.i(256, 1, "maxTrackRPM", "Maximum Track RPM, 1 RPM ~ 0.104 m/s");
         public final ConfigBase.ConfigBool enableTrackThrow = this.b(false, "enableTrackThrow", "Enable entire tracks being thrown off by explosions");
+        public final ConfigBase.ConfigInt wheelPairDist = this.i(7, 5, 15, "wheelPairDistance", "The max distance between wheels where steering, etc. will be paired");
 
         @Override
         public String getName() {
