@@ -66,7 +66,6 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
         this.wheelRadius = 0.5f;
         this.suspensionTravel = 1.5f;
         this.ship = () -> VSGameUtilsKt.getShipObjectManagingPos(this.level, pos);
-        setLazyTickRate(40);
     }
 
     public static SuspensionTrackBlockEntity large(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -198,9 +197,10 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
                         trackRPM
                 );
                 this.suspensionScale = controller.updateTrackBlock(this.trackID, data);
+                float wheelTravelDelta = (float) Math.abs(this.wheelTravel - (suspensionTravel + restOffset));
                 this.prevWheelTravel = this.wheelTravel;
                 this.wheelTravel = (float) (suspensionTravel + restOffset);
-                TrackPackets.getChannel().send(packetTarget(), new SuspensionWheelPacket(this.getBlockPos(), this.wheelTravel));
+                if (wheelTravelDelta > 0.01f) TrackPackets.getChannel().send(packetTarget(), new SuspensionWheelPacket(this.getBlockPos(), this.wheelTravel));
 
                 // Entity Damage
                 // TODO: Players don't get pushed, why?
@@ -221,6 +221,12 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
                 }
             }
         }
+    }
+
+    @Override
+    public void lazyTick() {
+        super.lazyTick();
+        if (this.assembled && !this.level.isClientSide && this.ship.get() != null) TrackPackets.getChannel().send(packetTarget(), new SuspensionWheelPacket(this.getBlockPos(), this.wheelTravel));
     }
 
     public record ClipResult(Vector3dc trackTangent, Vec3 suspensionLength, @Nullable Long groundShipId) { ; }

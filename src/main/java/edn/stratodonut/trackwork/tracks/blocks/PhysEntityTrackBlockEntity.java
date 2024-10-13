@@ -65,7 +65,6 @@ public class PhysEntityTrackBlockEntity extends TrackBaseBlockEntity implements 
         this.wheelRadius = 0.5f;
         this.ship = () -> VSGameUtilsKt.getShipObjectManagingPos(this.level, pos);
         this.wheel = new WeakReference<>(null);
-        setLazyTickRate(40);
     }
 
     public static PhysEntityTrackBlockEntity large(BlockEntityType<?> type, BlockPos pos, BlockState state) {

@@ -74,7 +74,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
         this.wheelRadius = 1.0f;
         this.suspensionTravel = 1.5f;
         this.ship = () -> VSGameUtilsKt.getShipObjectManagingPos(this.level, pos);
-        setLazyTickRate(40);
+        this.setLazyTickRate(10);
     }
 
     @Override
@@ -160,9 +160,10 @@ public class WheelBlockEntity extends KineticBlockEntity {
 
 //                 Steering Control
                 int bestSignal = this.level.getBestNeighborSignal(this.getBlockPos());
+                float oldSteeringValue = this.steeringValue;
                 this.steeringValue = bestSignal / 15f * ((dir.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1));
-
                 this.onLinkedWheel(wbe -> wbe.linkedSteeringValue = this.steeringValue);
+                float deltaSteeringValue = oldSteeringValue - this.steeringValue;
 
                 Vector3dc worldSpaceForward = ship.getTransform().getShipToWorldRotation().transform(getActionVec3d(axis, 1), new Vector3d());
                 float horizontalOffset = this.getPointHorizontalOffset();
@@ -208,7 +209,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
 
                 this.prevWheelTravel = this.wheelTravel;
                 this.wheelTravel = newWheelTravel;
-                TrackPackets.getChannel().send(packetTarget(), new SimpleWheelPacket(this.getBlockPos(), this.wheelTravel, this.getSteeringValue(), this.horizontalOffset));
+                if (Math.abs(delta) > 0.01f || Math.abs(deltaSteeringValue) > 0.05f) TrackPackets.getChannel().send(packetTarget(), new SimpleWheelPacket(this.getBlockPos(), this.wheelTravel, this.getSteeringValue(), this.horizontalOffset));
 
                 // Entity Damage
                 // TODO: Players don't get pushed, why?
@@ -229,6 +230,12 @@ public class WheelBlockEntity extends KineticBlockEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public void lazyTick() {
+        super.lazyTick();
+        if (this.assembled && !this.level.isClientSide && this.ship.get() != null) TrackPackets.getChannel().send(packetTarget(), new SimpleWheelPacket(this.getBlockPos(), this.wheelTravel, this.getSteeringValue(), this.horizontalOffset));
     }
 
     public record ClipResult(Vector3dc trackTangent, Vec3 suspensionLength, @Nullable Long groundShipId) { ; }

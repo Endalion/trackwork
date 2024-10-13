@@ -30,6 +30,7 @@ public abstract class TrackBaseBlockEntity extends KineticBlockEntity implements
     private boolean detracked = false;
     public TrackBaseBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
+        setLazyTickRate(10);
     }
 
     @Override
