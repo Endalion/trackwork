@@ -57,6 +57,10 @@ public class TrackworkMod
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> TrackworkSpriteShifts::init);
     }
 
+    public static void warn(String format, Object arg) {
+        LOGGER.warn(format, arg);
+    }
+
     public static void warn(String format, Object... args) {
         LOGGER.warn(format, args);
     }

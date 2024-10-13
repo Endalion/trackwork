@@ -6,6 +6,8 @@ import org.valkyrienskies.core.apigame.constraints.VSAttachmentConstraint;
 import org.valkyrienskies.core.apigame.constraints.VSConstraintAndId;
 import org.valkyrienskies.core.apigame.constraints.VSHingeOrientationConstraint;
 
+import javax.annotation.Nonnull;
+
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY
 )
@@ -52,11 +54,11 @@ public class PhysEntityTrackData {
         this.previousSpringDist = springDist;
     }
 
-    public final PhysEntityTrackData updateWith(UpdateData update) {
+    public final PhysEntityTrackData updateWith(@Nonnull UpdateData update) {
         return new PhysEntityTrackData(this.trackPos, this.wheelAxis, this.shiptraptionID, update.springConstant, update.damperConstant, this.springConstraint, axleConstraint, springId, axleId, update.trackRPM, this.previousSpringDist);
     }
 
-    public static PhysEntityTrackData from(CreateData data) {
+    public static PhysEntityTrackData from(@Nonnull CreateData data) {
         return new PhysEntityTrackData(data.trackPos, data.wheelAxis, data.shiptraptionID, data.springConstant, data.damperConstant, (VSAttachmentConstraint) data.springConstraint.getVsConstraint(), (VSHingeOrientationConstraint) data.axleConstraint.getVsConstraint(), data.springConstraint.getConstraintId(), data.axleConstraint.getConstraintId(), data.trackRPM, 0);
     }
 
