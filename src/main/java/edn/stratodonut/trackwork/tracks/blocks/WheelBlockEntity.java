@@ -179,12 +179,12 @@ public class WheelBlockEntity extends KineticBlockEntity {
                 ClipResult clipResult = clipAndResolve(ship, axis, worldSpaceStart.add(worldSpaceHorizontalOffset).add(worldSpaceFutureOffset), worldSpaceNormal);
 
                 forceVec = clipResult.trackTangent.mul(this.wheelRadius / 0.5, new Vector3d());
-                if (forceVec.lengthSquared() == 0) {
-                    BlockState b = this.level.getBlockState(BlockPos.containing(worldSpaceStart));
-                    if (b.getFluidState().is(FluidTags.WATER)) {
-                        forceVec = ship.getTransform().getShipToWorldRotation().transform(getActionVec3d(axis, 1)).mul(this.wheelRadius / 0.5).mul(0.2);
-                    }
-                }
+//                if (forceVec.lengthSquared() == 0) {
+//                    BlockState b = this.level.getBlockState(BlockPos.containing(worldSpaceStart));
+//                    if (b.getFluidState().is(FluidTags.WATER)) {
+//                        forceVec = ship.getTransform().getShipToWorldRotation().transform(getActionVec3d(axis, 1)).mul(this.wheelRadius / 0.5).mul(0.2);
+//                    }
+//                }
 
                 double suspensionTravel = clipResult.suspensionLength.lengthSqr() == 0 ? susScaled : clipResult.suspensionLength.length() - 0.5;
                 Vector3dc suspensionForce = toJOML(worldSpaceNormal.scale( (susScaled - suspensionTravel))).negate();

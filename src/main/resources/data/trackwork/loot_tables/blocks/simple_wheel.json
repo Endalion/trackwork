@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "trackwork:simple_wheel_part"
+          "name": "trackwork:simple_wheel"
         }
       ],
       "conditions": [

@@ -129,7 +129,7 @@ public class SimpleWheelController implements ShipForcesInducer {
         if (data.isWheelGrounded) {
             double suspensionDelta = velocityAtPosition.dot(trackNormal) + data.getSuspensionCompressionDelta().length();
             double tilt = 1 + this.tilt(trackRelPosShip);
-            tForce.add(data.suspensionCompression.mul(m * 4.0 * coefficientOfPower * this.suspensionStiffness * tilt * gravity_factor, new Vector3d()));
+            tForce.add(data.suspensionCompression.mul(m * 4.0 * coefficientOfPower * this.suspensionStiffness * tilt, new Vector3d()));
             tForce.add(trackNormal.mul(m * 1.2 * -suspensionDelta * coefficientOfPower * this.suspensionStiffness, new Vector3d()));
             // Really half-assed antislip when the spring is stronger than friction (what?)
             if (data.wheelRPM == 0) {
@@ -156,9 +156,9 @@ public class SimpleWheelController implements ShipForcesInducer {
                             .add(lateralSlip.normalize(Math.min(lateralSlip.length(), MAXIMUM_SLIP_LATERAL), new Vector3d()), new Vector3d());
                 }
                 tForce.add(slipVelocity.mul(1.0 * m * coefficientOfPower * gravity_factor, new Vector3d()));
-            } else if (!data.isFreespin) {
-                slipVelocity = surfaceVelocity.normalize(new Vector3d()).mul(slipVelocity.dot(surfaceVelocity.normalize(new Vector3d())), new Vector3d());
-                tForce.add(slipVelocity.normalize(Math.min(slipVelocity.length(), MAXIMUM_SLIP), new Vector3d()).mul(1.0 * m * coefficientOfPower));
+            } else if (!data.isFreespin && data.driveForceVector.length() != 0) {
+                slipVelocity = driveSlip.normalize(Math.min(driveSlip.length(), MAXIMUM_SLIP), new Vector3d());
+                tForce.add(slipVelocity.mul(1.0 * m * coefficientOfPower * gravity_factor, new Vector3d()));
             }
         }
 

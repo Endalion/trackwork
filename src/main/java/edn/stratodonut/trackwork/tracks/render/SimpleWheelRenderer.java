@@ -111,15 +111,15 @@ public class SimpleWheelRenderer extends KineticBlockEntityRenderer<WheelBlockEn
         {
             SuperByteBuffer wheels = CachedBufferer.partial(TrackworkPartialModels.SIMPLE_WHEEL, state);
             wheels.centre()
-                    .rotateY(yRot + be.getSteeringValue() * 30)
+                    .rotateY(-yRot + be.getSteeringValue() * 30)
 //                    .translate(0, be.getWheelRadius() , 0)
-                    .translate(horizontalOffset, -wheelTravel - 0.5, wheelTuck * axisMult)
+                    .translate(horizontalOffset, -wheelTravel - 0.5, -wheelTuck)
                     .rotateZ(-angleForBE)
 //                    .translate(0, 8 / 16f, 0)
                     .unCentre();
 
             wheels.light(light)
-                    .renderInto(ms, buffer.getBuffer(RenderType.solid()));
+                    .renderInto(ms, buffer.getBuffer(RenderType.cutout()));
         }
     }
 
