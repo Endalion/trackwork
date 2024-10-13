@@ -23,10 +23,11 @@ public class TrackCreativeTabs {
     public static final RegistryObject<CreativeModeTab> BASE_CREATIVE_TAB = REGISTER.register("base",
             () -> CreativeModeTab.builder()
                     .title(Components.translatable("itemGroup.trackwork"))
-                    .icon(() -> AllBlocks.BELT.asStack()).displayItems((displayParams, output) -> {
+                    .icon(AllBlocks.BELT::asStack)
+                    .displayItems((displayParams, output) -> {
                         for (RegistryEntry<Block> entry : REGISTRATE.getAll(Registries.BLOCK)) {
                             if (CreateRegistrate.isInCreativeTab(entry, AllCreativeModeTabs.BASE_CREATIVE_TAB))
-                            output.accept(entry.get().asItem());
+                                output.accept(entry.get().asItem());
                         }
 
                         for (RegistryEntry<Item> entry : REGISTRATE.getAll(Registries.ITEM)) {

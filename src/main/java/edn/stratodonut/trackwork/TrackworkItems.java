@@ -19,10 +19,10 @@ public class TrackworkItems {
                     .model(AssetLookup.itemModelWithPartials())
                     .register();
 
-    public static final ItemEntry<ControllerResetStick> CONTROL_RESET_STICK =
-            REGISTRATE.item("dev_reset_stick", ControllerResetStick::new)
-                    .properties(p -> p.stacksTo(1))
-                    .register();
+//    public static final ItemEntry<ControllerResetStick> CONTROL_RESET_STICK =
+//            REGISTRATE.item("dev_reset_stick", ControllerResetStick::new)
+//                    .properties(p -> p.stacksTo(1))
+//                    .register();
 
     public static void register() {}
 }

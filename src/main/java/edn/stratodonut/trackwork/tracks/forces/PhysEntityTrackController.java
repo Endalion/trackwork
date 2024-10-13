@@ -151,7 +151,11 @@ public class PhysEntityTrackController implements ShipForcesInducer {
         } else if (!(other instanceof PhysEntityTrackController otherController)) {
             return false;
         } else {
-            return Objects.equals(this.trackData, otherController.trackData) && Objects.equals(this.trackUpdateData, otherController.trackUpdateData) && areQueuesEqual(this.createdTrackData, otherController.createdTrackData) && areQueuesEqual(this.removedTracks, otherController.removedTracks) && this.nextBearingID == otherController.nextBearingID;
+            return Objects.equals(this.trackData, otherController.trackData) &&
+                    Objects.equals(this.trackUpdateData, otherController.trackUpdateData) &&
+                    areQueuesEqual(this.createdTrackData, otherController.createdTrackData) &&
+                    areQueuesEqual(this.removedTracks, otherController.removedTracks) &&
+                    this.nextBearingID == otherController.nextBearingID;
         }
     }
 }
