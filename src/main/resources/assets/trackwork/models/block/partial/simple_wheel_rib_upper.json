@@ -1,4 +1,5 @@
 {
+	"format_version": "1.21.6",
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"texture_size": [32, 32],
@@ -13,37 +14,37 @@
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 21.5]},
 			"faces": {
 				"north": {"uv": [6, 8.75, 6.75, 9.25], "texture": "#1"},
-				"east": {"uv": [0, 0, 5.5, 0.5], "texture": "#1"},
+				"east": {"uv": [13.25, 5.5, 12.75, 0], "rotation": 90, "texture": "#1"},
 				"south": {"uv": [6, 9.25, 6.75, 9.75], "texture": "#1"},
-				"west": {"uv": [0, 2.5, 5.5, 3], "texture": "#1"},
-				"up": {"uv": [5.5, 2.75, 0, 2], "rotation": 90, "texture": "#1"},
-				"down": {"uv": [0, 1.25, 5.5, 0.5], "rotation": 90, "texture": "#1"}
+				"west": {"uv": [12.5, 0, 13, 5.5], "rotation": 90, "texture": "#1"},
+				"up": {"uv": [13.25, 5.5, 12.5, 0], "texture": "#1"},
+				"down": {"uv": [13.25, 0, 12.5, 5.5], "texture": "#1"}
 			}
 		},
 		{
-			"from": [5, 7.5, 29],
-			"to": [11, 10.25, 32],
-			"rotation": {"angle": 0, "axis": "y", "origin": [5, 8, 29]},
+			"from": [6, 7.45, 8.5],
+			"to": [10, 10.6, 12.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 7.85, 11]},
 			"faces": {
-				"north": {"uv": [2, 4.5, 3.5, 3.75], "texture": "#1"},
-				"east": {"uv": [3.25, 6.5, 4, 7.25], "texture": "#1"},
-				"south": {"uv": [2, 4.5, 3.5, 3.75], "texture": "#1"},
-				"west": {"uv": [4, 6.5, 4.75, 7.25], "texture": "#1"},
-				"up": {"uv": [7.5, 5, 6, 4.25], "texture": "#1"},
-				"down": {"uv": [7.5, 4.25, 6, 5], "texture": "#1"}
+				"north": {"uv": [9.25, 3, 10.25, 3.75], "texture": "#1"},
+				"east": {"uv": [9.25, 3, 10.25, 3.75], "texture": "#1"},
+				"south": {"uv": [9.25, 3, 10.25, 3.75], "texture": "#1"},
+				"west": {"uv": [9.25, 3, 10.25, 3.75], "texture": "#1"},
+				"up": {"uv": [10.25, 4.75, 9.25, 3.75], "texture": "#1"},
+				"down": {"uv": [10.25, 3.75, 9.25, 4.75], "texture": "#1"}
 			}
 		},
 		{
-			"from": [6, 7.85, 8.5],
-			"to": [10, 10.25, 12.5],
-			"rotation": {"angle": 0, "axis": "y", "origin": [5, 8, 11]},
+			"from": [6, 7.525, 29],
+			"to": [10, 10.525, 32],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 9.025, 30.5]},
 			"faces": {
-				"north": {"uv": [3.5, 5.25, 4.5, 5.75], "texture": "#1"},
-				"east": {"uv": [4.5, 5.25, 3.5, 5.75], "texture": "#1"},
-				"south": {"uv": [3.5, 5.25, 4.5, 5.75], "texture": "#1"},
-				"west": {"uv": [3.5, 5.25, 4.5, 5.75], "texture": "#1"},
-				"up": {"uv": [7, 7.25, 6, 6.25], "texture": "#1"},
-				"down": {"uv": [7, 6.25, 6, 7.25], "texture": "#1"}
+				"north": {"uv": [11.75, 3, 10.75, 2.25], "texture": "#1"},
+				"east": {"uv": [11.25, 2.25, 10.5, 3], "rotation": 90, "texture": "#1"},
+				"south": {"uv": [12.5, 3, 13.25, 2], "rotation": 90, "texture": "#1"},
+				"west": {"uv": [11.25, 2.25, 10.5, 3], "rotation": 90, "texture": "#1"},
+				"up": {"uv": [10, 3, 11, 2.25], "texture": "#1"},
+				"down": {"uv": [10.75, 3, 11.75, 2.25], "texture": "#1"}
 			}
 		}
 	],
@@ -58,7 +59,9 @@
 			"name": "simple_wheel_concept",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"children": [0, 1, 2]
-		}
+			"children": [0]
+		},
+		1,
+		2
 	]
 }
