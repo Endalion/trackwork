@@ -13,13 +13,13 @@
 
   "itemGroup.trackwork": "驱动工艺",
   "item.trackwork.track_tool_kit" : "车轮履带工具包",
-  "item.trackwork.track_tool_kit.tooltip.behaviour1" : "降低悬挂的弹性以_提升稳定性_，但在颠簸地形可能表现不佳！_潜行_可进一步软化悬挂。",
-  "item.trackwork.track_tool_kit.tooltip.behaviour2" : "点击不同位置以_调整车轮前后偏移_。",
+  "item.trackwork.track_tool_kit.tooltip.behaviour1" : "降低悬挂的弹性以_提升稳定性_，但在颠簸地形可能表现不佳！_潜行并右击_可提升悬挂的弹性。",
+  "item.trackwork.track_tool_kit.tooltip.behaviour2" : "点击不同位置以_调整车轮的偏移_。",
   "item.trackwork.track_tool_kit.tooltip.condition1" : "使用刚度调节器时：",
   "item.trackwork.track_tool_kit.tooltip.condition2" : "使用电动工具时：",
   "item.trackwork.track_tool_kit.tooltip.summary" : "集成独立轮与履带调试功能的便携工具包，一包搞定所有调整需求！",
 
-  "block.trackwork.med_simple_wheel.tooltip.summary" : "由于采用了紧凑型传动设计，中型独立轮可以与大型独立轮保持相同的转速！",
+  "block.trackwork.med_simple_wheel.tooltip.summary" : "受紧凑型传动设计的影响，中型独立轮的轮胎转速可以与普通独立轮相等！",
 
   "death.attack.trackwork.run_over" : "%1$s被碾成了贴图",
   "death.attack.trackwork.run_over.player" : "%1$s被%2$s当成了减速带",
