@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+
     }
 }
 
@@ -144,6 +145,12 @@ repositories {
         url = 'https://maven.minecraftforge.net/'
     }
 
+    // CurseForge Maven Repository
+    maven {
+        name = 'CurseForge'
+        url = 'https://cursemaven.com'
+    }
+
     maven {
         url "https://maven.squiddev.cc"
         content {
@@ -207,6 +214,14 @@ dependencies {
 
     implementation 'thedarkcolour:kotlinforforge:4.10.0'
 
+    // ===== CURSEFORGE MOD DEPENDENCIES =====
+    // Template: runtimeOnly fg.deobf("curse.maven:MOD_SLUG-PROJECT_ID:FILE_ID")
+
+    // Drive by Wire - With deobfuscation for development environment
+    runtimeOnly fg.deobf("curse.maven:drive-by-wire-1192722:6224008")
+
+    // Add your CurseForge mods here using the template above:
+    // runtimeOnly fg.deobf("curse.maven:MOD_SLUG-PROJECT_ID:FILE_ID")
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
@@ -255,4 +270,3 @@ tasks.named('jar', Jar).configure {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
-

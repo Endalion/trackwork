@@ -112,6 +112,18 @@ public class TrackBlocks {
                     .transform(customItemModel())
                     .register();
 
+
+    public static final BlockEntry<WheelBlock> LARGE_SIMPLE_WHEEL =
+            REGISTRATE.block("large_simple_wheel", p -> new WheelBlock(p, TrackBlockEntityTypes.LARGE_SIMPLE_WHEEL))
+                    .initialProperties(() -> Blocks.RAIL)
+                    .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL).noCollission().strength(7.0f).sound(SoundType.METAL))
+                    .transform(BlockStressDefaults.setNoImpact())
+                    .transform(pickaxeOnly())
+                    .blockstate(BlockStateGen.horizontalBlockProvider(true))
+                    .item()
+                    .transform(customItemModel())
+                    .register();
+
     public static final BlockEntry<WheelBlock> SIMPLE_WHEEL =
             REGISTRATE.block("simple_wheel", WheelBlock::new)
                     .initialProperties(() -> Blocks.RAIL)
@@ -134,6 +146,7 @@ public class TrackBlocks {
                     .transform(customItemModel())
                     .register();
 
+    public static final BlockEntry<? extends RotatedPillarBlock> LARGE_SIMPLE_WHEEL_PART = wheelpart("large_simple_wheel_part");
     public static final BlockEntry<? extends RotatedPillarBlock> SIMPLE_WHEEL_PART = wheelpart("simple_wheel_part");
     public static final BlockEntry<? extends RotatedPillarBlock> MED_SIMPLE_WHEEL_PART = wheelpart("med_simple_wheel_part");
 

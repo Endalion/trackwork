@@ -19,6 +19,7 @@ public class TrackToolkitRenderer extends CustomRenderedItemModelRenderer {
     protected static final PartialModel OFFSET_WRENCH = new PartialModel(TrackworkMod.getResource("item/kit/power_wrench"));
     protected static final PartialModel SOCKET = new PartialModel(TrackworkMod.getResource("item/kit/socket"));
     protected static final PartialModel STIFFNESS_WRENCH = new PartialModel(TrackworkMod.getResource("item/kit/stiff_tool"));
+    protected static final PartialModel DAMPENING_WRENCH = new PartialModel(TrackworkMod.getResource("item/kit/damp_tool"));
 
     @Override
     protected void render(ItemStack stack, CustomRenderedItemModel model, PartialItemModelRenderer renderer, ItemDisplayContext transformType, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
@@ -29,7 +30,7 @@ public class TrackToolkitRenderer extends CustomRenderedItemModelRenderer {
         } else if (nbt.contains("Tool")) {
             ms.translate(1/16f, 1/16f, -1/16f);
             TrackToolkit.TOOL type = TrackToolkit.TOOL.from(nbt.getInt("Tool"));
-            
+
             BakedModel toolModel;
             switch (type) {
                 case OFFSET -> {
@@ -44,7 +45,7 @@ public class TrackToolkitRenderer extends CustomRenderedItemModelRenderer {
                     toolModel = OFFSET_WRENCH.get();
                 }
                 case STIFFNESS -> toolModel = STIFFNESS_WRENCH.get();
-                default -> toolModel = model.getOriginalModel();
+                default -> toolModel = DAMPENING_WRENCH.get();
             }
             renderer.render(toolModel, light);
 

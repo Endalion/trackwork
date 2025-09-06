@@ -30,9 +30,21 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class PhysicsTrackController implements ShipForcesInducer {
     @JsonIgnore
     public static final double RPM_TO_RADS = 0.10471975512;
+
+    // Friction/slip model
     @JsonIgnore
-    public static final double MAXIMUM_SLIP = 3;
+    public static final double MAXIMUM_SLIP = 10;
+    @JsonIgnore
+    public static final double MAXIMUM_SLIP_LATERAL = MAXIMUM_SLIP * 0.75;
+    @JsonIgnore
+    public static final double LATERAL_FRICTION_MULTIPLIER = 0.6;
+    @JsonIgnore
+    public static final double LONGITUDINAL_FRICTION_MULTIPLIER = 0.4; // NEW: lower than 1.0 for less forward/back traction
+    @JsonIgnore
+    public static final double MAXIMUM_G = 98.1 * 5;
+
     public static final Vector3dc UP = new Vector3d(0, 1, 0);
+
     private final HashMap<Integer, PhysTrackData> trackData = new HashMap<>();
 
     @JsonIgnore
@@ -44,6 +56,7 @@ public class PhysicsTrackController implements ShipForcesInducer {
 
     private volatile Vector3dc suspensionAdjust = new Vector3d(0, 1, 0);
     private volatile float suspensionStiffness = 1.0f;
+    private volatile float suspensionDampening = 1.2f;
 
     public PhysicsTrackController () {}
 
@@ -51,7 +64,6 @@ public class PhysicsTrackController implements ShipForcesInducer {
         if (ship.getAttachment(PhysicsTrackController.class) == null) {
             ship.saveAttachment(PhysicsTrackController.class, new PhysicsTrackController());
         }
-
         return ship.getAttachment(PhysicsTrackController.class);
     }
 
@@ -72,7 +84,7 @@ public class PhysicsTrackController implements ShipForcesInducer {
         });
         this.trackUpdateData.clear();
 
-        // Idk why, but sometimes removing a block can send an update in the same tick(?), so this is last.
+        // Sometimes removing a block sends an update in the same tick
         while(!removedTracks.isEmpty()) {
             Integer removeId = this.removedTracks.remove();
             this.trackData.remove(removeId);
@@ -86,14 +98,17 @@ public class PhysicsTrackController implements ShipForcesInducer {
         double coefficientOfPower = Math.min(2.0d, 14d / this.trackData.size());
         this.trackData.forEach((id, data) -> {
             Pair<Vector3dc, Vector3dc> forces = this.computeForce(data, ((PhysShipImpl) physShip), coefficientOfPower, lookupPhysShip);
-            if (forces != null) {
+            if (forces.getFirst().isFinite()) {
                 netLinearForce.add(forces.getFirst());
                 netTorque.add(forces.getSecond());
             }
         });
 
-        if (netLinearForce.isFinite()) physShip.applyInvariantForce(netLinearForce);
-        if (netTorque.isFinite()) physShip.applyInvariantTorque(netTorque);
+        // Clamp total acceleration to avoid physics explosions
+        if (netLinearForce.isFinite() && netLinearForce.length()/((PhysShipImpl) physShip).getInertia().getShipMass() < MAXIMUM_G) {
+            physShip.applyInvariantForce(netLinearForce);
+            if (netTorque.isFinite()) physShip.applyInvariantTorque(netTorque);
+        }
     }
 
     @Override
@@ -106,42 +121,62 @@ public class PhysicsTrackController implements ShipForcesInducer {
         ShipTransform shipTransform = ship.getTransform();
         double m =  ship.getInertia().getShipMass();
         Vector3dc trackRelPosShip = data.trackOriginPosition.sub(shipTransform.getPositionInShip(), new Vector3d());
-//            Vector3dc worldSpaceTrackOrigin = shipTransform.getShipToWorld().transformPosition(data.trackOriginPosition.get(new Vector3d()));
-        Vector3dc tForce = new Vector3d(); //data.trackSpeed;
+
+        Vector3d tForce = new Vector3d();
         Vector3dc trackNormal = data.trackNormal.normalize(new Vector3d());
         Vector3dc trackSurface = data.trackSpeed.mul(data.trackRPM * RPM_TO_RADS * 0.5, new Vector3d());
         Vector3dc velocityAtPosition = accumulatedVelocity(shipTransform, pose, data.trackContactPosition);
+
         if (data.istrackGrounded && data.groundShipId != null) {
             PhysShipImpl ground = (PhysShipImpl) lookupPhysShip.invoke(data.groundShipId);
             Vector3dc groundShipVelocity = accumulatedVelocity(ground.getTransform(), ground.getPoseVel(), data.trackContactPosition);
             velocityAtPosition = velocityAtPosition.sub(groundShipVelocity, new Vector3d());
         }
 
+        // Suspension
         if (data.istrackGrounded) {
             double suspensionDelta = velocityAtPosition.dot(trackNormal) + data.getSuspensionCompressionDelta().length();
             double tilt = 1 + this.tilt(trackRelPosShip);
-            tForce = tForce.add(data.suspensionCompression.mul(m * 1.0 * coefficientOfPower * this.suspensionStiffness * tilt, new Vector3d()), new Vector3d());
-            tForce = tForce.add(trackNormal.mul(m * 0.6 * -suspensionDelta * coefficientOfPower * this.suspensionStiffness, new Vector3d()), new Vector3d());
-            // Really half-assed antislip when the spring is stronger than friction (what?)
+
+            // Spring force
+            tForce.add(data.suspensionCompression.mul(m * 4.0 * coefficientOfPower * this.suspensionStiffness * tilt, new Vector3d()));
+
+            // Damper force
+            tForce.add(trackNormal.mul(m * -suspensionDelta * coefficientOfPower * this.suspensionDampening, new Vector3d()));
+
             if (data.trackRPM == 0) {
                 tForce = new Vector3d(0, tForce.y(), 0);
             }
         }
 
+        // Slip/friction
         if (data.istrackGrounded || trackSurface.lengthSquared() > 0) {
-            // Torque
             Vector3dc surfaceVelocity = velocityAtPosition.sub(trackNormal.mul(velocityAtPosition.dot(trackNormal), new Vector3d()), new Vector3d());
             Vector3dc slipVelocity = trackSurface.sub(surfaceVelocity, new Vector3d());
-            // TODO: Do I want to use real friction here?
+
+            Vector3dc driveDir = data.trackSpeed.normalize(new Vector3d());
+            Vector3dc driveSlip = driveDir.mul(driveDir.dot(slipVelocity), new Vector3d());
+            Vector3dc lateralSlip = slipVelocity.sub(driveSlip, new Vector3d());
+
             if (data.istrackGrounded) {
-                tForce = tForce.add(slipVelocity.normalize(Math.min(slipVelocity.length(), MAXIMUM_SLIP), new Vector3d()).mul(1.0 * m * coefficientOfPower), new Vector3d());
+                // Apply multipliers separately
+                Vector3dc driveForce = driveSlip.normalize(Math.min(driveSlip.length(), MAXIMUM_SLIP), new Vector3d())
+                        .mul(LONGITUDINAL_FRICTION_MULTIPLIER, new Vector3d()); // less traction forward/back
+                Vector3dc lateralForce = lateralSlip.normalize(Math.min(lateralSlip.length(), MAXIMUM_SLIP_LATERAL), new Vector3d())
+                        .mul(LATERAL_FRICTION_MULTIPLIER, new Vector3d());
+
+                Vector3dc combinedSlip = driveForce.add(lateralForce, new Vector3d());
+                tForce.add(combinedSlip.mul(1.0 * m * coefficientOfPower, new Vector3d()));
             } else {
-                slipVelocity = surfaceVelocity.normalize(new Vector3d()).mul(slipVelocity.dot(surfaceVelocity.normalize(new Vector3d())), new Vector3d());
-                tForce = tForce.add(slipVelocity.normalize(Math.min(slipVelocity.length(), MAXIMUM_SLIP), new Vector3d()).mul(1.0 * m * coefficientOfPower), new Vector3d());
+                if (data.trackSpeed.lengthSquared() > 0) {
+                    slipVelocity = driveSlip.normalize(Math.min(driveSlip.length(), MAXIMUM_SLIP), new Vector3d())
+                            .mul(LONGITUDINAL_FRICTION_MULTIPLIER, new Vector3d());
+                    tForce.add(slipVelocity.mul(1.0 * m * coefficientOfPower, new Vector3d()));
+                }
             }
         }
 
-        Vector3dc trackRelPos = shipTransform.getShipToWorldRotation().transform(trackRelPosShip, new Vector3d());//worldSpaceTrackOrigin.sub(shipTransform.getPositionInWorld(), new Vector3d());
+        Vector3dc trackRelPos = shipTransform.getShipToWorldRotation().transform(trackRelPosShip, new Vector3d());
         Vector3dc torque = trackRelPos.cross(tForce, new Vector3d());
         return new Pair<>(tForce, torque);
     }
@@ -164,9 +199,19 @@ public class PhysicsTrackController implements ShipForcesInducer {
         this.removedTracks.add(id);
     }
 
-    public final float setDamperCoefficient(float delta) {
-        this.suspensionStiffness = Math.clamp(1.0f, 4.0f, this.suspensionStiffness + delta);
+    public final float setSuspensionStiffness(float delta) {
+        this.suspensionStiffness = Math.clamp(1.0f, 10.0f, this.suspensionStiffness + delta);
         return this.suspensionStiffness;
+    }
+
+    public final float setSuspensionDampening(float delta) {
+        this.suspensionDampening = Math.clamp(5f, 10.0f, this.suspensionDampening + delta);
+        return this.suspensionDampening;
+    }
+
+    @Deprecated
+    public final float setDamperCoefficient(float delta) {
+        return setSuspensionDampening(delta);
     }
 
     public final void adjustSuspension(Vector3f delta) {
@@ -197,7 +242,13 @@ public class PhysicsTrackController implements ShipForcesInducer {
         } else if (!(other instanceof PhysicsTrackController otherController)) {
             return false;
         } else {
-            return Objects.equals(this.trackData, otherController.trackData) && Objects.equals(this.trackUpdateData, otherController.trackUpdateData) && areQueuesEqual(this.createdTrackData, otherController.createdTrackData) && areQueuesEqual(this.removedTracks, otherController.removedTracks) && this.nextBearingID == otherController.nextBearingID;
+            return Objects.equals(this.trackData, otherController.trackData) &&
+                    Objects.equals(this.trackUpdateData, otherController.trackUpdateData) &&
+                    areQueuesEqual(this.createdTrackData, otherController.createdTrackData) &&
+                    areQueuesEqual(this.removedTracks, otherController.removedTracks) &&
+                    this.nextBearingID == otherController.nextBearingID &&
+                    Float.compare(this.suspensionStiffness, otherController.suspensionStiffness) == 0 &&
+                    Float.compare(this.suspensionDampening, otherController.suspensionDampening) == 0;
         }
     }
 }

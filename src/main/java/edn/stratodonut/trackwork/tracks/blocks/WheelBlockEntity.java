@@ -90,6 +90,13 @@ public class WheelBlockEntity extends KineticBlockEntity {
         return be;
     }
 
+    public static WheelBlockEntity large(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        WheelBlockEntity be = new WheelBlockEntity(type, pos, state);
+        be.wheelRadius = 1.5f;
+        be.suspensionTravel = 1.5f;
+        return be;
+    }
+
     @Override
     public void remove() {
         super.remove();

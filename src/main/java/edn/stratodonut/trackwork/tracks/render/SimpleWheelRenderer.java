@@ -110,9 +110,11 @@ public class SimpleWheelRenderer extends KineticBlockEntityRenderer<WheelBlockEn
         }
 
         {
-            SuperByteBuffer wheels = be.getWheelRadius() > 0.8f ? 
-                    CachedBufferer.partial(TrackworkPartialModels.SIMPLE_WHEEL, state) :
-                    CachedBufferer.partial(TrackworkPartialModels.MED_SIMPLE_WHEEL, state);
+            SuperByteBuffer wheels = be.getWheelRadius() > 1f
+                    ? CachedBufferer.partial(TrackworkPartialModels.LARGE_SIMPLE_WHEEL, state)
+                    : be.getWheelRadius() > 0.8f
+                    ? CachedBufferer.partial(TrackworkPartialModels.SIMPLE_WHEEL, state)
+                    : CachedBufferer.partial(TrackworkPartialModels.MED_SIMPLE_WHEEL, state);
             wheels.centre()
                     .rotateY(-yRot + be.getSteeringValue() * 30)
 //                    .translate(0, be.getWheelRadius() , 0)

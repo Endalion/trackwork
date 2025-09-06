@@ -1,4 +1,5 @@
 {
+	"format_version": "1.21.6",
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"texture_size": [32, 32],
@@ -48,7 +49,7 @@
 			"translation": [1, 4, 1]
 		},
 		"firstperson_lefthand": {
-			"rotation": [17.25, 267, 10],
+			"rotation": [17.25, -93, 10],
 			"translation": [1, 4, 1]
 		},
 		"ground": {

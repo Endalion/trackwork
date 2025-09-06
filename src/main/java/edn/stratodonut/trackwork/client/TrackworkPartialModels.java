@@ -16,6 +16,7 @@ public class TrackworkPartialModels {
             TRACK_WRAP = block("wrapped_link"),
             SIMPLE_WHEEL = block("simple_wheel"),
             MED_SIMPLE_WHEEL = block("med_simple_wheel"),
+            LARGE_SIMPLE_WHEEL = block("large_simple_wheel"),
             SIMPLE_WHEEL_RIB = block("partial/simple_wheel_rib"),
             SIMPLE_WHEEL_RIB_UPPER = block("partial/simple_wheel_rib_upper"),
             SIMPLE_WHEEL_SPRING_BASE = block("partial/simple_wheel_spring_base"),

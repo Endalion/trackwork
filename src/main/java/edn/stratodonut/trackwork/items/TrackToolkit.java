@@ -45,6 +45,7 @@ import java.util.function.Consumer;
 public class TrackToolkit extends Item {
     public enum TOOL implements StringRepresentable {
         STIFFNESS,
+        DAMPENING,
         OFFSET;
 
         private static final TOOL[] vals = values();
@@ -86,7 +87,6 @@ public class TrackToolkit extends Item {
                     BlockEntity be = level.getBlockEntity(pos);
 
                     AllSoundEvents.WRENCH_ROTATE.playOnServer(player.level(), pos, 1, player.getRandom().nextFloat() + .5f);
-//                    player.playSound(;, 1.0f, 0.8f + 0.2f * player.getRandom().nextFloat());
 
                     if (be instanceof SuspensionTrackBlockEntity se) {
                         Ship ship = VSGameUtilsKt.getShipObjectManagingPos(level, context.getClickedPos());
@@ -114,7 +114,7 @@ public class TrackToolkit extends Item {
                         if (ship == null) return InteractionResult.FAIL;
                         if (!level.isClientSide) {
                             PhysicsTrackController controller = PhysicsTrackController.getOrCreate((ServerShip) ship);
-                            float result = controller.setDamperCoefficient(isSneaking ? -1f : 1f);
+                            float result = controller.setSuspensionStiffness(isSneaking ? -1f : 1f);
 
                             MutableComponent chatMessage = Lang.text("Adjusted suspension stiffness to ")
                                     .add(Components.literal(String.format("%.2fx", result))).component();
@@ -128,15 +128,54 @@ public class TrackToolkit extends Item {
                         if (ship == null) return InteractionResult.FAIL;
                         if (!level.isClientSide) {
                             SimpleWheelController controller = SimpleWheelController.getOrCreate((ServerShip) ship);
-                            float result = controller.setDamperCoefficient(isSneaking ? -1f : 1f);
+                            float result = controller.setSuspensionStiffness(isSneaking ? -1 : 1f);
 
-                            MutableComponent chatMessage = Lang.text("Adjusted suspension stiffness to ")
+                            MutableComponent chatMessage = Lang.text("Adjusted wheel suspension stiffness to ")
                                     .add(Components.literal(String.format("%.2fx", result))).component();
 
                             player.displayClientMessage(chatMessage, true);
                         }
                         return InteractionResult.SUCCESS;
                     }
+                }
+                case DAMPENING -> {
+                    Block hitBlock = level.getBlockState(pos).getBlock();
+
+                    player.playSound(TrackSounds.SPRING_TOOL.get(), 1.0f, 0.6f + 0.3f * player.getRandom().nextFloat());
+
+                    boolean isSneaking = player.isShiftKeyDown();
+                    if (hitBlock instanceof TrackBaseBlock<?>) {
+                        Ship ship = VSGameUtilsKt.getShipObjectManagingPos(level, context.getClickedPos());
+                        if (ship == null) return InteractionResult.FAIL;
+                        if (!level.isClientSide) {
+                            PhysicsTrackController controller = PhysicsTrackController.getOrCreate((ServerShip) ship);
+                            float result = controller.setSuspensionDampening(isSneaking ? -1f : 1f);
+
+                            MutableComponent chatMessage = Lang.text("Adjusted track suspension dampening to ")
+                                    .add(Components.literal(String.format("%.2fx", result))).component();
+
+                            player.displayClientMessage(chatMessage, true);
+                        }
+                        return InteractionResult.SUCCESS;
+
+                    } else if (hitBlock instanceof WheelBlock) {
+                        Ship ship = VSGameUtilsKt.getShipObjectManagingPos(level, context.getClickedPos());
+                        if (ship == null) return InteractionResult.FAIL;
+                        if (!level.isClientSide) {
+                            SimpleWheelController controller = SimpleWheelController.getOrCreate((ServerShip) ship);
+                            float result = controller.setSuspensionDampening(isSneaking ? -1f : 1f);
+
+                            MutableComponent chatMessage = Lang.text("Adjusted wheel suspension dampening to ")
+                                    .add(Components.literal(String.format("%.2fx", result))).component();
+
+                            player.displayClientMessage(chatMessage, true);
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
+
+
+                // Note: TrackBaseBlock doesn't appear to have separate dampening control in PhysicsTrackController
+                    // If you need to add dampening control for tracks, you'll need to implement it in PhysicsTrackController
                 }
             }
         }

@@ -3,6 +3,8 @@ package edn.stratodonut.trackwork;
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import edn.stratodonut.trackwork.tracks.TrackPonderScenes;
 
+import javax.sound.midi.Track;
+
 public class TrackPonders {
     static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(TrackworkMod.MOD_ID);
 
@@ -14,7 +16,7 @@ public class TrackPonders {
                         TrackBlocks.MED_PHYS_TRACK, TrackBlocks.MED_SUSPENSION_TRACK)
                 .addStoryBoard("tracks", TrackPonderScenes::trackTutorial);
 
-        HELPER.forComponents(TrackBlocks.SIMPLE_WHEEL, TrackBlocks.MED_SIMPLE_WHEEL)
+        HELPER.forComponents(TrackBlocks.SIMPLE_WHEEL, TrackBlocks.MED_SIMPLE_WHEEL, TrackBlocks.LARGE_SIMPLE_WHEEL)
                 .addStoryBoard("wheels", TrackPonderScenes::wheelTutorial);
     }
 }

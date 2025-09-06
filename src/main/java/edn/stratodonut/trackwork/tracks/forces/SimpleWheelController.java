@@ -34,7 +34,9 @@ public class SimpleWheelController implements ShipForcesInducer {
     @JsonIgnore
     public static final double MAXIMUM_SLIP = 10;
     @JsonIgnore
-    public static final double MAXIMUM_SLIP_LATERAL = MAXIMUM_SLIP * 1.5;
+    public static final double MAXIMUM_SLIP_LATERAL = MAXIMUM_SLIP * 0.75; // Increased from 1.5 to 3.0
+    @JsonIgnore
+    public static final double LATERAL_FRICTION_MULTIPLIER = 1.5; // New multiplier for lateral friction
     @JsonIgnore
     public static final double MAXIMUM_G = 98.1*5;
     public static final Vector3dc UP = new Vector3d(0, 1, 0);
@@ -49,6 +51,7 @@ public class SimpleWheelController implements ShipForcesInducer {
 
     private volatile Vector3dc suspensionAdjust = new Vector3d(0, 1, 0);
     private volatile float suspensionStiffness = 1.0f;
+    private volatile float suspensionDampening = 1.2f;
 
     public SimpleWheelController() {}
 
@@ -112,7 +115,7 @@ public class SimpleWheelController implements ShipForcesInducer {
         PoseVel pose = ship.getPoseVel();
         ShipTransform shipTransform = ship.getTransform();
         double m =  ship.getInertia().getShipMass();
-        double gravity_factor = Math.max(0, shipTransform.getShipToWorldRotation().transform(UP, new Vector3d()).dot(UP));
+        double gravity_factor = Math.max(0.3, shipTransform.getShipToWorldRotation().transform(UP, new Vector3d()).dot(UP));
         Vector3dc trackRelPosShip = data.wheelOriginPosition.sub(shipTransform.getPositionInShip(), new Vector3d());
 //            Vector3dc worldSpaceTrackOrigin = shipTransform.getShipToWorld().transformPosition(data.trackOriginPosition.get(new Vector3d()));
         Vector3d tForce = new Vector3d(); //data.trackSpeed;
@@ -129,8 +132,13 @@ public class SimpleWheelController implements ShipForcesInducer {
         if (data.isWheelGrounded) {
             double suspensionDelta = velocityAtPosition.dot(trackNormal) + data.getSuspensionCompressionDelta().length();
             double tilt = 1 + this.tilt(trackRelPosShip);
+
+            // Spring force (stiffness)
             tForce.add(data.suspensionCompression.mul(m * 4.0 * coefficientOfPower * this.suspensionStiffness * tilt, new Vector3d()));
-            tForce.add(trackNormal.mul(m * 1.2 * -suspensionDelta * coefficientOfPower * this.suspensionStiffness, new Vector3d()));
+
+            // Damper force (dampening) - separate from stiffness
+            tForce.add(trackNormal.mul(m * -suspensionDelta * coefficientOfPower * this.suspensionDampening, new Vector3d()));
+
             // Really half-assed antislip when the spring is stronger than friction (what?)
             if (data.wheelRPM == 0) {
                 tForce = new Vector3d(0, tForce.y(), 0);
@@ -150,12 +158,19 @@ public class SimpleWheelController implements ShipForcesInducer {
             // TODO: A better Tyre model like Pacoianowfa 98?
             if (data.isWheelGrounded) {
                 if (data.isFreespin) {
-                    slipVelocity = lateralSlip.normalize(Math.min(lateralSlip.length(), MAXIMUM_SLIP_LATERAL), new Vector3d());
+                    // Enhanced lateral friction for freespin mode
+                    Vector3dc lateralForce = lateralSlip.normalize(Math.min(lateralSlip.length(), MAXIMUM_SLIP_LATERAL), new Vector3d())
+                            .mul(LATERAL_FRICTION_MULTIPLIER, new Vector3d()); // Apply lateral friction multiplier
+                    tForce.add(lateralForce.mul(1.0 * m * coefficientOfPower * gravity_factor, new Vector3d()));
                 } else {
-                    slipVelocity = driveSlip.normalize(Math.min(driveSlip.length(), MAXIMUM_SLIP), new Vector3d())
-                            .add(lateralSlip.normalize(Math.min(lateralSlip.length(), MAXIMUM_SLIP_LATERAL), new Vector3d()), new Vector3d());
+                    Vector3dc driveForce = driveSlip.normalize(Math.min(driveSlip.length(), MAXIMUM_SLIP), new Vector3d());
+                    // Enhanced lateral friction for normal mode
+                    Vector3dc lateralForce = lateralSlip.normalize(Math.min(lateralSlip.length(), MAXIMUM_SLIP_LATERAL), new Vector3d())
+                            .mul(LATERAL_FRICTION_MULTIPLIER, new Vector3d()); // Apply lateral friction multiplier
+
+                    Vector3dc combinedSlip = driveForce.add(lateralForce, new Vector3d());
+                    tForce.add(combinedSlip.mul(1.0 * m * coefficientOfPower * gravity_factor, new Vector3d()));
                 }
-                tForce.add(slipVelocity.mul(1.0 * m * coefficientOfPower * gravity_factor, new Vector3d()));
             } else if (!data.isFreespin && data.driveForceVector.length() != 0) {
                 slipVelocity = driveSlip.normalize(Math.min(driveSlip.length(), MAXIMUM_SLIP), new Vector3d());
                 tForce.add(slipVelocity.mul(1.0 * m * coefficientOfPower * gravity_factor, new Vector3d()));
@@ -184,9 +199,30 @@ public class SimpleWheelController implements ShipForcesInducer {
         this.removedTracks.add(pos.asLong());
     }
 
-    public final float setDamperCoefficient(float delta) {
-        this.suspensionStiffness = Math.clamp(1.0f, 4.0f, this.suspensionStiffness + delta);
+    // Updated method names for clarity
+    public final float setSuspensionStiffness(float delta) {
+        this.suspensionStiffness = Math.clamp(1.0f, 10.0f, this.suspensionStiffness + delta);
         return this.suspensionStiffness;
+    }
+
+    public final float setSuspensionDampening(float delta) {
+        this.suspensionDampening = Math.clamp(4f, 10.0f, this.suspensionDampening + delta);
+        return this.suspensionDampening;
+    }
+
+    // Legacy method for backwards compatibility
+    @Deprecated
+    public final float setDamperCoefficient(float delta) {
+        return setSuspensionDampening(delta);
+    }
+
+    // Getters for the new parameters
+    public final float getSuspensionStiffness() {
+        return this.suspensionStiffness;
+    }
+
+    public final float getSuspensionDampening() {
+        return this.suspensionDampening;
     }
 
     public final void adjustSuspension(Vector3f delta) {
@@ -217,7 +253,13 @@ public class SimpleWheelController implements ShipForcesInducer {
         } else if (!(other instanceof SimpleWheelController otherController)) {
             return false;
         } else {
-            return Objects.equals(this.trackData, otherController.trackData) && Objects.equals(this.trackUpdateData, otherController.trackUpdateData) && areQueuesEqual(this.createdTrackData, otherController.createdTrackData) && areQueuesEqual(this.removedTracks, otherController.removedTracks) && this.nextBearingID == otherController.nextBearingID;
+            return Objects.equals(this.trackData, otherController.trackData) &&
+                    Objects.equals(this.trackUpdateData, otherController.trackUpdateData) &&
+                    areQueuesEqual(this.createdTrackData, otherController.createdTrackData) &&
+                    areQueuesEqual(this.removedTracks, otherController.removedTracks) &&
+                    this.nextBearingID == otherController.nextBearingID &&
+                    Float.compare(this.suspensionStiffness, otherController.suspensionStiffness) == 0 &&
+                    Float.compare(this.suspensionDampening, otherController.suspensionDampening) == 0;
         }
     }
 }

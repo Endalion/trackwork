@@ -66,6 +66,14 @@ public class TrackBlockEntityTypes {
             .renderer(() -> SimpleWheelRenderer::new)
             .register();
 
+
+    public static final BlockEntityEntry<WheelBlockEntity> LARGE_SIMPLE_WHEEL = REGISTRATE
+            .blockEntity("large_simple_wheel", WheelBlockEntity::large)
+            .validBlocks(TrackBlocks.LARGE_SIMPLE_WHEEL)
+            .renderer(() -> SimpleWheelRenderer::new)
+            .register();
+
+
     public static final BlockEntityEntry<TrackAdjusterBlockEntity> TRACK_LEVEL_CONTROLLER = REGISTRATE
             .blockEntity("track_level_controller", TrackAdjusterBlockEntity::new)
             .instance(() -> ShaftInstance::new)
