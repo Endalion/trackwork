@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "create:block/large_wheels",
+	"parent": "trackwork:block/med_cogs",
 	"texture_size": [32, 32],
 	"textures": {
 		"3": "trackwork:block/cogwheel",

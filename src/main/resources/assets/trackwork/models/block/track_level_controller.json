@@ -1,4 +1,5 @@
 {
+	"format_version": "1.21.6",
 	"credit": "Made with Blockbench",
 	"parent": "create:block/encased_chain_drive/single",
 	"texture_size": [32, 32],

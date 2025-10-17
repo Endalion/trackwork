@@ -2,9 +2,11 @@ package edn.stratodonut.trackwork.tracks.blocks;
 
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
+import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.Lang;
 import edn.stratodonut.trackwork.TrackBlockEntityTypes;
+import edn.stratodonut.trackwork.TrackworkConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -33,7 +35,8 @@ public class WheelBlock extends HorizontalKineticBlock implements IBE<WheelBlock
 
     public enum VisualVariant implements StringRepresentable {
         DEFAULT,
-        NO_SPRING;
+        NO_SPRING,
+        NO_LOWER_RIB;
 
         @Override
         public @NotNull String getSerializedName() {
@@ -67,10 +70,14 @@ public class WheelBlock extends HorizontalKineticBlock implements IBE<WheelBlock
         if (AllItems.WRENCH.isIn(heldItem)) {
             if (state.hasProperty(VISUAL_VARIANT)) {
                 VisualVariant old = state.getValue(VISUAL_VARIANT);
+                VisualVariant newVariant;
                 switch (old) {
-                    case DEFAULT -> world.setBlockAndUpdate(pos, state.setValue(VISUAL_VARIANT, VisualVariant.NO_SPRING));
-                    default -> world.setBlockAndUpdate(pos, state.setValue(VISUAL_VARIANT, VisualVariant.DEFAULT));
+                    case DEFAULT -> newVariant = VisualVariant.NO_SPRING;
+                    case NO_SPRING -> newVariant = VisualVariant.NO_LOWER_RIB;
+                    case NO_LOWER_RIB -> newVariant = VisualVariant.DEFAULT;
+                    default -> newVariant = VisualVariant.DEFAULT;
                 }
+                world.setBlockAndUpdate(pos, state.setValue(VISUAL_VARIANT, newVariant));
                 return InteractionResult.SUCCESS;
             }
         };
@@ -97,7 +104,28 @@ public class WheelBlock extends HorizontalKineticBlock implements IBE<WheelBlock
 
     @Override
     public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
-        return face == state.getValue(HORIZONTAL_FACING);
+        Direction wheelFacing = state.getValue(HORIZONTAL_FACING);
+        
+        // Always allow connection from the front
+        if (face == wheelFacing) {
+            return true;
+        }
+        
+        // Check config setting for RPM passthrough
+        if (!TrackworkConfigs.server().wheelRPMPassthrough.get()) {
+            return false;
+        }
+        
+        // Only allow pass-through (back connection) if there's a kinetic block connected to the front
+        if (face == wheelFacing.getOpposite()) {
+            BlockPos frontPos = pos.relative(wheelFacing);
+            BlockState frontState = world.getBlockState(frontPos);
+            if (frontState.getBlock() instanceof KineticBlock ke) {
+                return ke.hasShaftTowards(world, frontPos, frontState, wheelFacing.getOpposite());
+            }
+        }
+        
+        return false;
     }
 
     @Override

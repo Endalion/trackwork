@@ -23,6 +23,7 @@ public class TrackworkConfigs {
         public final ConfigBase.ConfigInt maxRPM = this.i(256, 1, "maxTrackRPM", "Maximum Track RPM, 1 RPM ~ 0.104 m/s");
         public final ConfigBase.ConfigBool enableTrackThrow = this.b(false, "enableTrackThrow", "Enable entire tracks being thrown off by explosions");
         public final ConfigBase.ConfigInt wheelPairDist = this.i(7, 5, 15, "wheelPairDistance", "The max distance between wheels where steering, etc. will be paired");
+        public final ConfigBase.ConfigBool wheelRPMPassthrough = this.b(true, "wheelRPMPassthrough", "Allow wheels to transmit RPM through them when connected to kinetic network");
 
         @Override
         public String getName() {

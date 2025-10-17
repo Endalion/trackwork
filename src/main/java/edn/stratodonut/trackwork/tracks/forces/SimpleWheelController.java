@@ -115,7 +115,9 @@ public class SimpleWheelController implements ShipForcesInducer {
         PoseVel pose = ship.getPoseVel();
         ShipTransform shipTransform = ship.getTransform();
         double m =  ship.getInertia().getShipMass();
-        double gravity_factor = Math.max(0.3, shipTransform.getShipToWorldRotation().transform(UP, new Vector3d()).dot(UP));
+        // Transform global UP to ship-local coordinates for more realistic physics
+        Vector3dc localUp = shipTransform.getShipToWorldRotation().transform(UP, new Vector3d());
+        double gravity_factor = Math.max(0.3, localUp.dot(UP));
         Vector3dc trackRelPosShip = data.wheelOriginPosition.sub(shipTransform.getPositionInShip(), new Vector3d());
 //            Vector3dc worldSpaceTrackOrigin = shipTransform.getShipToWorld().transformPosition(data.trackOriginPosition.get(new Vector3d()));
         Vector3d tForce = new Vector3d(); //data.trackSpeed;
@@ -127,17 +129,18 @@ public class SimpleWheelController implements ShipForcesInducer {
             Vector3dc groundShipVelocity = accumulatedVelocity(ground.getTransform(), ground.getPoseVel(), data.wheelContactPosition);
             velocityAtPosition = velocityAtPosition.sub(groundShipVelocity, new Vector3d());
         }
-
         // Suspension
         if (data.isWheelGrounded) {
             double suspensionDelta = velocityAtPosition.dot(trackNormal) + data.getSuspensionCompressionDelta().length();
             double tilt = 1 + this.tilt(trackRelPosShip);
 
-            // Spring force (stiffness)
-            tForce.add(data.suspensionCompression.mul(m * 4.0 * coefficientOfPower * this.suspensionStiffness * tilt, new Vector3d()));
+            // Spring force (stiffness) - apply in world coordinates but calculated relative to local up
+            Vector3dc springForce = data.suspensionCompression.mul(m * 4.0 * coefficientOfPower * this.suspensionStiffness * tilt, new Vector3d());
+            tForce.add(springForce);
 
-            // Damper force (dampening) - separate from stiffness
-            tForce.add(trackNormal.mul(m * -suspensionDelta * coefficientOfPower * this.suspensionDampening, new Vector3d()));
+            // Damper force (dampening) - apply in world coordinates but calculated relative to local up
+            Vector3dc damperForce = trackNormal.mul(m * -suspensionDelta * coefficientOfPower * this.suspensionDampening, new Vector3d());
+            tForce.add(damperForce);
 
             // Really half-assed antislip when the spring is stronger than friction (what?)
             if (data.wheelRPM == 0) {

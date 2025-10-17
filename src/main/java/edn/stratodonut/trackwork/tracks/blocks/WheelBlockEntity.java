@@ -93,7 +93,14 @@ public class WheelBlockEntity extends KineticBlockEntity {
     public static WheelBlockEntity large(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         WheelBlockEntity be = new WheelBlockEntity(type, pos, state);
         be.wheelRadius = 1.5f;
-        be.suspensionTravel = 1.5f;
+        be.suspensionTravel = 2f;
+        return be;
+    }
+
+    public static WheelBlockEntity small(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        WheelBlockEntity be = new WheelBlockEntity(type, pos, state);
+        be.wheelRadius = 0.5f;
+        be.suspensionTravel = 1f;
         return be;
     }
 
@@ -205,8 +212,13 @@ public class WheelBlockEntity extends KineticBlockEntity {
 
 //                 Steering Control
                 int bestSignal = this.level.getBestNeighborSignal(this.getBlockPos());
+                float targetSteeringValue = bestSignal / 15f * ((dir.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1));
                 float oldSteeringValue = this.steeringValue;
-                this.steeringValue = bestSignal / 15f * ((dir.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : -1));
+                
+                // Smooth steering interpolation
+                float steeringSpeed = 0.5f; // Adjust this value to control steering speed (0.1 = slower, 0.3 = faster)
+                this.steeringValue = Mth.lerp(steeringSpeed, this.steeringValue, targetSteeringValue);
+                
                 float deltaSteeringValue = oldSteeringValue - this.steeringValue;
                 this.onLinkedWheel(wbe -> wbe.setLinkedSteeringValue(this.steeringValue));
 
