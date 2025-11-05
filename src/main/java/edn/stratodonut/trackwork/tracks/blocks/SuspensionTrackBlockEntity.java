@@ -234,22 +234,13 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
 
                 // Entity Damage
                 // TODO: Players don't get pushed, why?
-                List<LivingEntity> hits = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.getBlockPos()).deflate(0.5).expandTowards(0, -1.5, 0));
-                Vec3 worldPos = toMinecraft(ship.getShipToWorld().transformPosition(toJOML(Vec3.atCenterOf(this.getBlockPos()))));
+                List<LivingEntity> hits = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.getBlockPos()).expandTowards(0, -1, 0).deflate(0.5));
+                Vec3 worldPos = toMinecraft(ship.getShipToWorld().transformPosition(toJOML(Vec3.atCenterOf(this.getBlockPos()))));;
                 for (LivingEntity e : hits) {
                     push(e, worldPos);
                     Vec3 relPos = e.position().subtract(worldPos);
                     float speed = Math.abs(this.getSpeed());
-                    if (speed > 1) e.hurt(TrackDamageSources.runOver(this.level), (speed / 8f) * AllConfigs.server().kinetics.crushingDamage.get());
-                }
-
-                BlockState state = this.getBlockState();
-                if (wheelTravelDelta < -0.3 && state.hasProperty(SuspensionTrackBlock.WHEEL_VARIANT)
-                        && state.getValue(SuspensionTrackBlock.WHEEL_VARIANT) != SuspensionTrackBlock.TrackVariant.blank) {
-                    this.level.playSound(null, this.getBlockPos(), SUSPENSION_CREAK.get(), SoundSource.BLOCKS,
-                            Math.clamp(0.0f, 2.0f, Math.abs(wheelTravelDelta * 3 * (this.getSpeed() / 256))*0.5f),
-                            Math.lerp(1, 0.3f, -wheelTravelDelta) + 0.4F * this.random.nextFloat()
-                    );
+                    if (speed > 1) e.hurt(SuspensionTrackBlock.damageSourceTrack, (speed / 8f) * AllConfigs.server().kinetics.crushingDamage.get());
                 }
             }
         }
