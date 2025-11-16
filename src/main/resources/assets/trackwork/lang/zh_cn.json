@@ -22,7 +22,7 @@
   "block.trackwork.med_simple_wheel.tooltip.summary" : "受紧凑型传动设计的影响，中型独立轮的轮胎转速可以与普通独立轮相等！",
 
   "death.attack.trackwork.run_over" : "%1$s被碾成了贴图",
-  "death.attack.trackwork.run_over.player" : "%1$s被%2$s当成了减速带",
+  "death.attack.trackwork.run_over.player" : "%1$s被%2$s丢到车底",
 
   "subtitle.trackwork.ambient.track.sprocket" : "履带：链轮转动",
   "subtitle.trackwork.ambient.track.ground" : "履带：撞击地面",
