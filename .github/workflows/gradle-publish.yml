@@ -1,44 +1,50 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
-
-name: Gradle Package
+name: Build and Release Mod
 
 on:
   release:
-    types: [created]
+    types: [published]
+
+env:
+  # 根据你的项目情况调整以下环境变量
+  MINECRAFT_VERSION: "1.20.1"
+  JAVA_VERSION: "17"
+
+permissions:
+  contents: write
 
 jobs:
-  build:
-
+  build-and-release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
+      # 1. 检出仓库代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+      # 2. 设置Java环境
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
 
-    - name: Build with Gradle
-      run: ./gradlew build
+      # 3. 确保Gradle Wrapper有执行权限（非Windows系统需要）
+      - name: Make Gradlew executable
+        run: chmod +x ./gradlew
 
-    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
-    - name: Publish to GitHub Packages
-      run: ./gradlew publish
-      env:
-        USERNAME: ${{ github.actor }}
-        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # 4. 执行构建
+      - name: Build with Gradle
+        run: ./gradlew clean build
+
+      # 5. 上传构建产物到Release
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # 这会将构建出的JAR文件上传至Release
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./build/libs/Trackwork.jar # 重要：修改为你的实际JAR文件路径
+          asset_name: Trackwork.jar # 你希望在Release中显示的文件名
+          asset_content_type: application/java-archive
