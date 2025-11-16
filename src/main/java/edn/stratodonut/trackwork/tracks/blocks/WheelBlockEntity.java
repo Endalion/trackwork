@@ -1,36 +1,9 @@
 package edn.stratodonut.trackwork.tracks.blocks;
 
-import static com.simibubi.create.content.kinetics.base.HorizontalKineticBlock.HORIZONTAL_FACING;
-import static edn.stratodonut.trackwork.TrackSounds.SUSPENSION_CREAK;
-import static edn.stratodonut.trackwork.tracks.forces.SimpleWheelController.UP;
-import static org.valkyrienskies.mod.common.util.VectorConversionsMCKt.toJOML;
-import static org.valkyrienskies.mod.common.util.VectorConversionsMCKt.toMinecraft;
-
-import java.util.List;
-import java.util.Random;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Math;
-import org.joml.Vector3d;
-import org.joml.Vector3dc;
-import org.valkyrienskies.core.api.ships.ServerShip;
-import org.valkyrienskies.core.api.ships.Ship;
-import org.valkyrienskies.mod.common.VSGameUtilsKt;
-import org.valkyrienskies.physics_api.PoseVel;
-
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.infrastructure.config.AllConfigs;
-
-import edn.stratodonut.trackwork.TrackAmbientGroups;
-import edn.stratodonut.trackwork.TrackDamageSources;
-import edn.stratodonut.trackwork.TrackPackets;
-import edn.stratodonut.trackwork.TrackSounds;
-import edn.stratodonut.trackwork.TrackworkConfigs;
-import edn.stratodonut.trackwork.TrackworkUtil;
+import edn.stratodonut.trackwork.*;
 import edn.stratodonut.trackwork.sounds.TrackSoundScapes;
 import edn.stratodonut.trackwork.tracks.data.SimpleWheelData;
 import edn.stratodonut.trackwork.tracks.forces.SimpleWheelController;
@@ -53,8 +26,27 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Math;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
+import org.valkyrienskies.core.api.ships.ServerShip;
+import org.valkyrienskies.core.api.ships.Ship;
+import org.valkyrienskies.mod.common.VSGameUtilsKt;
+import org.valkyrienskies.physics_api.PoseVel;
+
+import java.util.List;
+import java.util.Random;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import static com.simibubi.create.content.kinetics.base.HorizontalKineticBlock.HORIZONTAL_FACING;
+import static edn.stratodonut.trackwork.TrackSounds.SUSPENSION_CREAK;
+import static edn.stratodonut.trackwork.tracks.forces.SimpleWheelController.UP;
+import static org.valkyrienskies.mod.common.util.VectorConversionsMCKt.toJOML;
+import static org.valkyrienskies.mod.common.util.VectorConversionsMCKt.toMinecraft;
 
 public class WheelBlockEntity extends KineticBlockEntity {
     private float wheelRadius;
@@ -252,7 +244,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
                 // Entity Damage
                 // TODO: Players don't get pushed, why?
                 List<LivingEntity> hits = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.getBlockPos()).deflate(0.5).expandTowards(0, -1.5, 0));
-                Vec3 worldPos = toMinecraft(ship.getShipToWorld().transformPosition(toJOML(Vec3.atCenterOf(this.getBlockPos()))));;
+                Vec3 worldPos = toMinecraft(ship.getShipToWorld().transformPosition(toJOML(Vec3.atCenterOf(this.getBlockPos()))));
                 for (LivingEntity e : hits) {
                     SuspensionTrackBlockEntity.push(e, worldPos);
                     Vec3 relPos = e.position().subtract(worldPos);
@@ -282,7 +274,8 @@ public class WheelBlockEntity extends KineticBlockEntity {
         if (this.assembled && !this.level.isClientSide && this.ship.get() != null) this.syncToClient();
     }
 
-    public record ClipResult(Vector3dc trackTangent, Vec3 suspensionLength, @Nullable Long groundShipId) { ; }
+    public record ClipResult(Vector3dc trackTangent, Vec3 suspensionLength, @Nullable Long groundShipId) {
+    }
 
     // TODO: Terrain dynamics
     // Ground pressure?

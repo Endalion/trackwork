@@ -1,16 +1,15 @@
 package edn.stratodonut.trackwork.tracks.render;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import edn.stratodonut.trackwork.TrackworkConfigs;
 import edn.stratodonut.trackwork.client.TrackworkPartialModels;
 import edn.stratodonut.trackwork.tracks.blocks.PhysEntityTrackBlockEntity;
 import edn.stratodonut.trackwork.tracks.blocks.TrackBaseBlock;
-import com.jozufozu.flywheel.backend.Backend;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -28,12 +27,12 @@ public class PhysEntityTrackRenderer extends KineticBlockEntityRenderer<PhysEnti
                               int light, int overlay) {
         super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
 
-        if (Backend.canUseInstancing(be.getLevel())) {
-            BlockState state = getRenderedBlockState(be);
-            RenderType type = getRenderType(be, state);
-            if (type != null)
-                renderRotatingBuffer(be, getRotatedModel(be, state), ms, buffer.getBuffer(type), light);
-        }
+        //if (BackendManager.canUseInstancing(be.getLevel())) {
+        //    BlockState state = getRenderedBlockState(be);
+        //    RenderType type = getRenderType(be, state);
+        //    if (type != null)
+        //        renderRotatingBuffer(be, getRotatedModel(be, state), ms, buffer.getBuffer(type), light);
+        //}
 
         BlockState state = be.getBlockState();
 //        Boolean alongFirst = state.getValue(GantryCarriageBlock.AXIS_ALONG_FIRST_COORDINATE);
@@ -55,15 +54,15 @@ public class PhysEntityTrackRenderer extends KineticBlockEntityRenderer<PhysEnti
 
 //        SuperByteBuffer cogs = CachedBufferer.partial(TrackworkPartialModels.COGS, state);
         SuperByteBuffer cogs = be.getWheelRadius() < 0.6f ?
-                CachedBufferer.partial(TrackworkPartialModels.COGS, state) :
-                be.getWheelRadius() > 0.8f ? CachedBufferer.partial(TrackworkPartialModels.LARGE_COGS, state) :
-                    CachedBufferer.partial(TrackworkPartialModels.MED_COGS, state);
-        cogs.centre()
-                .rotateY(trackAxis == Direction.Axis.X ? 0 : 90)
-                .rotateX(-angleForBE)
+                CachedBuffers.partial(TrackworkPartialModels.COGS, state) :
+                be.getWheelRadius() > 0.8f ? CachedBuffers.partial(TrackworkPartialModels.LARGE_COGS, state) :
+                    CachedBuffers.partial(TrackworkPartialModels.MED_COGS, state);
+        cogs.center()
+                .rotateYDegrees(trackAxis == Direction.Axis.X ? 0 : 90)
+                .rotateXDegrees(-angleForBE)
 //                .scale(1, be.getWheelRadius() / 0.5f, be.getWheelRadius() / 0.5f)
                 .translate(0, 9 / 16f, 0)
-                .unCentre();
+                .uncenter();
 
         cogs.light(light)
                 .renderInto(ms, buffer.getBuffer(RenderType.solid()));

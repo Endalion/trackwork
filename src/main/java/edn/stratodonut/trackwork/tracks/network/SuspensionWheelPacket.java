@@ -1,7 +1,7 @@
 package edn.stratodonut.trackwork.tracks.network;
 
-import edn.stratodonut.trackwork.tracks.blocks.SuspensionTrackBlockEntity;
 import com.simibubi.create.foundation.networking.BlockEntityDataPacket;
+import edn.stratodonut.trackwork.tracks.blocks.SuspensionTrackBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 

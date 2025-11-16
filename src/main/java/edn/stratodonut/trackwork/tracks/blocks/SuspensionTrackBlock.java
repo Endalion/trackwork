@@ -1,14 +1,12 @@
 package edn.stratodonut.trackwork.tracks.blocks;
 
 import com.simibubi.create.AllItems;
-import com.simibubi.create.foundation.utility.Lang;
 import edn.stratodonut.trackwork.TrackBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -28,17 +26,17 @@ public class SuspensionTrackBlock extends TrackBaseBlock<SuspensionTrackBlockEnt
     public static final Property<TrackVariant> WHEEL_VARIANT = EnumProperty.create("variant", TrackVariant.class);
 
     public enum TrackVariant implements StringRepresentable {
-        WHEEL, WHEEL_ROLLER, ROLLER, BLANK;
+        wheel, wheel_roller, roller, blank;
 
         @Override
         public @NotNull String getSerializedName() {
-            return Lang.asId(name());
+            return name();
         }
     }
 
     public SuspensionTrackBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(PART, TrackPart.NONE).setValue(WHEEL_VARIANT, TrackVariant.WHEEL));
+        registerDefaultState(defaultBlockState().setValue(PART, TrackPart.none).setValue(WHEEL_VARIANT, TrackVariant.wheel));
     }
 
     @Override
@@ -55,13 +53,12 @@ public class SuspensionTrackBlock extends TrackBaseBlock<SuspensionTrackBlockEnt
             if (state.hasProperty(WHEEL_VARIANT)) {
                 TrackVariant old = state.getValue(WHEEL_VARIANT);
                 switch (old) {
-                    case WHEEL -> world.setBlockAndUpdate(pos, state.setValue(WHEEL_VARIANT, TrackVariant.BLANK));
-                    default -> world.setBlockAndUpdate(pos, state.setValue(WHEEL_VARIANT, TrackVariant.WHEEL));
+                    case wheel -> world.setBlockAndUpdate(pos, state.setValue(WHEEL_VARIANT, TrackVariant.blank));
+                    default -> world.setBlockAndUpdate(pos, state.setValue(WHEEL_VARIANT, TrackVariant.wheel));
                 }
-                ;
                 return InteractionResult.SUCCESS;
             }
-        };
+        }
         return super.use(state, world, pos, player, handIn, hit);
     }
 

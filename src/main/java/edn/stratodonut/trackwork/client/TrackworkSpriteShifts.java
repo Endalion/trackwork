@@ -1,9 +1,8 @@
 package edn.stratodonut.trackwork.client;
 
-import com.simibubi.create.foundation.block.render.SpriteShiftEntry;
-import com.simibubi.create.foundation.block.render.SpriteShifter;
-
 import edn.stratodonut.trackwork.TrackworkMod;
+import net.createmod.catnip.render.SpriteShiftEntry;
+import net.createmod.catnip.render.SpriteShifter;
 
 public class TrackworkSpriteShifts {
     public static final SpriteShiftEntry BELT = get("block/belt", "block/belt_scroll");

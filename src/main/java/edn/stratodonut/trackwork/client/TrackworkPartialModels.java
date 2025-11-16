@@ -1,7 +1,6 @@
 package edn.stratodonut.trackwork.client;
 
-import com.jozufozu.flywheel.core.PartialModel;
-
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import edn.stratodonut.trackwork.TrackworkMod;
 
 public class TrackworkPartialModels {
@@ -22,7 +21,7 @@ public class TrackworkPartialModels {
             SIMPLE_WHEEL_SPRING_COIL = block("partial/simple_wheel_spring_coil");
 
     private static PartialModel block(String path) {
-        return new PartialModel(TrackworkMod.getResource("block/" + path));
+        return PartialModel.of(TrackworkMod.getResource("block/" + path));
     }
 
     public static void init() {}

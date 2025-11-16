@@ -1,29 +1,27 @@
 package edn.stratodonut.trackwork.sounds;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.valkyrienskies.mod.common.VSGameUtilsKt;
-
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
-import com.simibubi.create.foundation.utility.VecHelper;
 import com.simibubi.create.infrastructure.config.AllConfigs;
-
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import org.valkyrienskies.mod.common.VSGameUtilsKt;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrackSoundScape {
 	List<ContinuousSound> continuous;
 	List<RepeatingSound> repeating;
 	private int sound_volume_arg_max = 15;
-	private float pitch;
-	private AmbientGroup group;
+	private final float pitch;
+	private final AmbientGroup group;
 	private Vec3 meanPos;
-	private PitchGroups.Group pitchGroup;
+	private final PitchGroups.Group pitchGroup;
 
 	public TrackSoundScape(float pitch, AmbientGroup group) {
 		this.pitchGroup = PitchGroups.getGroupFromPitch(pitch);

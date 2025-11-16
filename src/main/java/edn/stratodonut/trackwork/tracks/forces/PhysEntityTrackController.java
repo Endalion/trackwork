@@ -1,10 +1,10 @@
 package edn.stratodonut.trackwork.tracks.forces;
 
-import edn.stratodonut.trackwork.TrackworkMod;
-import edn.stratodonut.trackwork.tracks.data.PhysEntityTrackData;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mojang.datafixers.util.Pair;
+import edn.stratodonut.trackwork.TrackworkMod;
+import edn.stratodonut.trackwork.tracks.data.PhysEntityTrackData;
 import kotlin.jvm.functions.Function1;
 import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
@@ -100,14 +100,15 @@ public class PhysEntityTrackController implements ShipForcesInducer {
         if (wheel != null) {
             double m = ship.getInertia().getShipMass();
             ShipTransform shipTransform = ship.getTransform();
-//            Vector3dc trackPos = shipTransform.getShipToWorld().transformPosition(data.trackPos, new Vector3d());
-//            Vector3dc springVec = wheel.getTransform().getPositionInWorld().sub(trackPos, new Vector3d());
-//            double springDist = Math.clamp(0.0, 1.5, 1.5 - springVec.length());
-//            Vector3dc springForce =  data.springConstraint.getLocalSlideAxis0().mul(m * 8.0 * springDist, new Vector3d());
-//            double distDelta = Math.clamp(-5, 5, (springDist - data.previousSpringDist));
-//            double damperForce = (distDelta / 20) * m * 3000.0;
-//            springForce = springForce.add(data.springConstraint.getLocalSlideAxis0().mul(damperForce, new Vector3d()), new Vector3d());
-//            data.previousSpringDist = springDist;
+            Vector3dc trackPos = shipTransform.getShipToWorld().transformPosition(data.trackPos, new Vector3d());
+            Vector3dc springVec = wheel.getTransform().getPositionInWorld().sub(trackPos, new Vector3d());
+            double springDist = Math.clamp(0.0, 1.5, 1.5 - springVec.length());
+            assert data.springConstraint != null;
+            Vector3dc springForce =  data.springConstraint.getLocalPos0().mul(m * 8.0 * springDist, new Vector3d());
+            double distDelta = Math.clamp(-5, 5, (springDist - data.previousSpringDist));
+            double damperForce = (distDelta / 20) * m * 3000.0;
+            springForce = springForce.add(data.springConstraint.getLocalPos0().mul(damperForce, new Vector3d()), new Vector3d());
+            data.previousSpringDist = springDist;
 
             Vector3dc wheelAxis = shipTransform.getShipToWorldRotation().transform(data.wheelAxis, new Vector3d());
             double wheelSpeed = wheel.getPoseVel().getOmega().dot(wheelAxis);

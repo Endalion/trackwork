@@ -1,31 +1,26 @@
 package edn.stratodonut.trackwork.tracks.blocks;
 
-import com.mojang.datafixers.util.Pair;
-import com.simibubi.create.foundation.sound.SoundScapes;
-import com.simibubi.create.foundation.utility.Lang;
 import edn.stratodonut.trackwork.*;
 import edn.stratodonut.trackwork.sounds.TrackSoundScapes;
 import edn.stratodonut.trackwork.tracks.ITrackPointProvider;
 import edn.stratodonut.trackwork.tracks.TrackBeltEntity;
 import edn.stratodonut.trackwork.tracks.data.PhysEntityTrackData;
 import edn.stratodonut.trackwork.tracks.forces.PhysEntityTrackController;
-import edn.stratodonut.trackwork.tracks.render.TrackBeltRenderer;
 import edn.stratodonut.trackwork.wheel.WheelEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.DistExecutor;
-
 import org.jetbrains.annotations.NotNull;
 import org.joml.Math;
 import org.joml.Quaterniond;
@@ -62,6 +57,7 @@ public class PhysEntityTrackBlockEntity extends TrackBaseBlockEntity implements 
     private WeakReference<WheelEntity> wheel;
     public boolean assembled;
     public boolean assembleNextTick = true;
+    MutableComponent chatMessage = MutableComponent.create(ComponentContents.EMPTY);
 
     public PhysEntityTrackBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -243,7 +239,7 @@ public class PhysEntityTrackBlockEntity extends TrackBaseBlockEntity implements 
                     if (distance > 8f) {
                         this.assemble();
                         wheel = this.wheel.get();
-                    };
+                    }
                 }
                 if (wheel == null) {
                     TrackworkMod.warn("Wheel is NULL after assembly! At {}", this.getBlockPos().toString());
@@ -287,17 +283,15 @@ public class PhysEntityTrackBlockEntity extends TrackBaseBlockEntity implements 
 //    }
 
     public void addMassStats(List<Component> tooltip, float mass) {
-        Lang.text("Total Mass")
-                .style(GRAY)
-                .forGoggles(tooltip);
+        Component.literal("Total Mass")
+                .withStyle(GRAY);
 
-        Lang.number(mass)
-                .text(" kg")
-                .style(ChatFormatting.WHITE)
+        Component.literal(String.valueOf(mass))
+                .append(" kg")
+                .withStyle(ChatFormatting.WHITE);
 //                .space()
 //                .add(Lang.translate("gui.goggles.at_current_speed")
 //                        .style(ChatFormatting.DARK_GRAY))
-                .forGoggles(tooltip, 1);
     }
 
     @Override
@@ -357,7 +351,7 @@ public class PhysEntityTrackBlockEntity extends TrackBaseBlockEntity implements 
     @Override
     public float calculateStressApplied() {
         if (this.level.isClientSide || !TrackworkConfigs.server().enableStress.get() ||
-                !this.assembled || this.getBlockState().getValue(PART) != TrackPart.START) return super.calculateStressApplied();
+                !this.assembled || this.getBlockState().getValue(PART) != TrackPart.start) return super.calculateStressApplied();
 
         Ship ship = this.ship.get();
         if (ship == null) return super.calculateStressApplied();

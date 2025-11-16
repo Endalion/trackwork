@@ -3,7 +3,6 @@ package edn.stratodonut.trackwork.tracks.blocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.Lang;
 import edn.stratodonut.trackwork.TrackBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,12 +31,12 @@ public class WheelBlock extends HorizontalKineticBlock implements IBE<WheelBlock
     public static final Property<VisualVariant> VISUAL_VARIANT = EnumProperty.create("variant", VisualVariant.class);
 
     public enum VisualVariant implements StringRepresentable {
-        DEFAULT,
-        NO_SPRING;
+        vdefault,
+        no_spring;
 
         @Override
         public @NotNull String getSerializedName() {
-            return Lang.asId(name());
+            return name();
         }
     }
     
@@ -68,12 +67,12 @@ public class WheelBlock extends HorizontalKineticBlock implements IBE<WheelBlock
             if (state.hasProperty(VISUAL_VARIANT)) {
                 VisualVariant old = state.getValue(VISUAL_VARIANT);
                 switch (old) {
-                    case DEFAULT -> world.setBlockAndUpdate(pos, state.setValue(VISUAL_VARIANT, VisualVariant.NO_SPRING));
-                    default -> world.setBlockAndUpdate(pos, state.setValue(VISUAL_VARIANT, VisualVariant.DEFAULT));
+                    case vdefault -> world.setBlockAndUpdate(pos, state.setValue(VISUAL_VARIANT, VisualVariant.no_spring));
+                    default -> world.setBlockAndUpdate(pos, state.setValue(VISUAL_VARIANT, VisualVariant.vdefault));
                 }
                 return InteractionResult.SUCCESS;
             }
-        };
+        }
         return super.use(state, world, pos, player, handIn, hit);
     }
     

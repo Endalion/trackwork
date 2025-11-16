@@ -1,20 +1,17 @@
 package edn.stratodonut.trackwork.tracks.blocks;
 
-import com.simibubi.create.content.contraptions.ITransformableBlock;
+import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
-import com.simibubi.create.content.kinetics.chainDrive.ChainGearshiftBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.Iterate;
-import com.simibubi.create.foundation.utility.Lang;
 import edn.stratodonut.trackwork.TrackworkConfigs;
 import edn.stratodonut.trackwork.tracks.ITrackPointProvider;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
@@ -26,21 +23,20 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class TrackBaseBlock<BE extends TrackBaseBlockEntity> extends RotatedPillarKineticBlock implements ITransformableBlock, IBE<BE> {
+public abstract class TrackBaseBlock<BE extends TrackBaseBlockEntity> extends RotatedPillarKineticBlock implements TransformableBlock, IBE<BE> {
 
     public static final Property<TrackPart> PART = EnumProperty.create("part", TrackPart.class);
     public static final BooleanProperty CONNECTED_ALONG_FIRST_COORDINATE =
             DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 
     public enum TrackPart implements StringRepresentable {
-        START, MIDDLE, END, NONE;
+        start, middle, end, none;
 
         @Override
         public @NotNull String getSerializedName() {
-            return Lang.asId(name());
+            return name();
         }
     }
 
@@ -126,12 +122,12 @@ public abstract class TrackBaseBlock<BE extends TrackBaseBlockEntity> extends Ro
             return stateIn;
 
         if (!(neighbour.getBlock() instanceof TrackBaseBlock)) {
-            if (facingAlongFirst != connectionAlongFirst || part == TrackPart.NONE)
+            if (facingAlongFirst != connectionAlongFirst || part == TrackPart.none)
                 return stateIn;
-            if (part == TrackPart.MIDDLE)
-                return stateIn.setValue(PART, positive ? TrackPart.END : TrackPart.START);
-            if ((part == TrackPart.START) == positive)
-                return stateIn.setValue(PART, TrackPart.NONE);
+            if (part == TrackPart.middle)
+                return stateIn.setValue(PART, positive ? TrackPart.end : TrackPart.start);
+            if ((part == TrackPart.start) == positive)
+                return stateIn.setValue(PART, TrackPart.none);
             return stateIn;
         }
 
@@ -143,18 +139,18 @@ public abstract class TrackBaseBlock<BE extends TrackBaseBlockEntity> extends Ro
 
         if (neighbour.getValue(AXIS) == faceAxis)
             return stateIn;
-        if (otherPart != TrackPart.NONE && otherConnectionAxis != faceAxis)
+        if (otherPart != TrackPart.none && otherConnectionAxis != faceAxis)
             return stateIn;
 
-        if (part == TrackPart.NONE) {
-            part = positive ? TrackPart.START : TrackPart.END;
+        if (part == TrackPart.none) {
+            part = positive ? TrackPart.start : TrackPart.end;
             connectionAlongFirst = axis == Direction.Axis.X ? faceAxis.isVertical() : faceAxis == Direction.Axis.X;
         } else if (connectionAxis != faceAxis) {
             return stateIn;
         }
 
-        if ((part == TrackPart.START) != positive)
-            part = TrackPart.MIDDLE;
+        if ((part == TrackPart.start) != positive)
+            part = TrackPart.middle;
 
         return stateIn.setValue(PART, part)
                 .setValue(CONNECTED_ALONG_FIRST_COORDINATE, connectionAlongFirst);
@@ -162,7 +158,7 @@ public abstract class TrackBaseBlock<BE extends TrackBaseBlockEntity> extends Ro
 
     @Override
     public BlockState getRotatedBlockState(BlockState originalState, Direction targetedFace) {
-        if (originalState.getValue(PART) == TrackPart.NONE)
+        if (originalState.getValue(PART) == TrackPart.none)
             return super.getRotatedBlockState(originalState, targetedFace);
         return super.getRotatedBlockState(originalState,
                 Direction.get(Direction.AxisDirection.POSITIVE, getConnectionAxis(originalState)));
@@ -187,12 +183,9 @@ public abstract class TrackBaseBlock<BE extends TrackBaseBlockEntity> extends Ro
             return false;
         if (facing.getAxis() != connectionAxis)
             return false;
-        if (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE && (part == TrackPart.MIDDLE || part == TrackPart.START))
+        if (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE && (part == TrackPart.middle || part == TrackPart.start))
             return true;
-        if (facing.getAxisDirection() == Direction.AxisDirection.NEGATIVE && (part == TrackPart.MIDDLE || part == TrackPart.END))
-            return true;
-
-        return false;
+        return facing.getAxisDirection() == Direction.AxisDirection.NEGATIVE && (part == TrackPart.middle || part == TrackPart.end);
     }
 
     protected static Direction.Axis getConnectionAxis(BlockState state) {
@@ -248,10 +241,10 @@ public abstract class TrackBaseBlock<BE extends TrackBaseBlockEntity> extends Ro
 
     protected BlockState reversePart(BlockState pState) {
         TrackPart part = pState.getValue(PART);
-        if (part == TrackPart.START)
-            return pState.setValue(PART, TrackPart.END);
-        if (part == TrackPart.END)
-            return pState.setValue(PART, TrackPart.START);
+        if (part == TrackPart.start)
+            return pState.setValue(PART, TrackPart.end);
+        if (part == TrackPart.end)
+            return pState.setValue(PART, TrackPart.start);
         return pState;
     }
 

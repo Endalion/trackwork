@@ -1,15 +1,15 @@
 package edn.stratodonut.trackwork.tracks.forces;
 
-import org.joml.Vector3f;
-import edn.stratodonut.trackwork.tracks.data.PhysTrackData;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mojang.datafixers.util.Pair;
+import edn.stratodonut.trackwork.tracks.data.PhysTrackData;
 import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Math;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
+import org.joml.Vector3f;
 import org.valkyrienskies.core.api.ships.PhysShip;
 import org.valkyrienskies.core.api.ships.ServerShip;
 import org.valkyrienskies.core.api.ships.ShipForcesInducer;

@@ -1,10 +1,7 @@
 package edn.stratodonut.trackwork.items;
 
 import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.Create;
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
 import edn.stratodonut.trackwork.TrackSounds;
 import edn.stratodonut.trackwork.tracks.blocks.SuspensionTrackBlockEntity;
 import edn.stratodonut.trackwork.tracks.blocks.TrackBaseBlock;
@@ -12,13 +9,10 @@ import edn.stratodonut.trackwork.tracks.blocks.WheelBlock;
 import edn.stratodonut.trackwork.tracks.blocks.WheelBlockEntity;
 import edn.stratodonut.trackwork.tracks.forces.PhysicsTrackController;
 import edn.stratodonut.trackwork.tracks.forces.SimpleWheelController;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.OutgoingChatMessage;
-import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -59,7 +53,7 @@ public class TrackToolkit extends Item {
 
         @Override
         public @NotNull String getSerializedName() {
-            return Lang.asId(name());
+            return name();
         }
     }
 
@@ -76,6 +70,8 @@ public class TrackToolkit extends Item {
 
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
+
+        MutableComponent chatMessage = MutableComponent.create(ComponentContents.EMPTY);
 
         CompoundTag nbt = stack.getOrCreateTag();
         if (nbt.contains("Tool")) {
@@ -116,8 +112,7 @@ public class TrackToolkit extends Item {
                             PhysicsTrackController controller = PhysicsTrackController.getOrCreate((ServerShip) ship);
                             float result = controller.setDamperCoefficient(isSneaking ? -1f : 1f);
 
-                            MutableComponent chatMessage = Lang.text("Adjusted suspension stiffness to ")
-                                    .add(Components.literal(String.format("%.2fx", result))).component();
+                            chatMessage.append("Adjusted suspension stiffness to "+ result);
 
                             player.displayClientMessage(chatMessage, true);
                         }
@@ -130,8 +125,7 @@ public class TrackToolkit extends Item {
                             SimpleWheelController controller = SimpleWheelController.getOrCreate((ServerShip) ship);
                             float result = controller.setDamperCoefficient(isSneaking ? -1f : 1f);
 
-                            MutableComponent chatMessage = Lang.text("Adjusted suspension stiffness to ")
-                                    .add(Components.literal(String.format("%.2fx", result))).component();
+                            chatMessage.append("Adjusted suspension stiffness to "+ result);
 
                             player.displayClientMessage(chatMessage, true);
                         }

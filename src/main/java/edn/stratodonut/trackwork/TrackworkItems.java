@@ -3,7 +3,6 @@ package edn.stratodonut.trackwork;
 import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import edn.stratodonut.trackwork.items.ControllerResetStick;
 import edn.stratodonut.trackwork.items.TrackToolkit;
 
 import static edn.stratodonut.trackwork.TrackworkMod.REGISTRATE;

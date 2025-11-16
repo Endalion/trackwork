@@ -1,26 +1,16 @@
 package edn.stratodonut.trackwork.sounds;
 
-import static org.valkyrienskies.mod.common.util.VectorConversionsMCKt.toMinecraft;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
-import org.valkyrienskies.mod.common.VSGameUtilsKt;
-
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
-import com.simibubi.create.foundation.utility.Pair;
 import com.simibubi.create.infrastructure.config.AllConfigs;
-
 import edn.stratodonut.trackwork.TrackworkConfigs;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import org.valkyrienskies.mod.common.VSGameUtilsKt;
+
+import java.util.*;
 
 public class TrackSoundScapes {
     static final int UPDATE_INTERVAL = 5;

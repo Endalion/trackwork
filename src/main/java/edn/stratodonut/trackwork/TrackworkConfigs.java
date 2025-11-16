@@ -1,7 +1,6 @@
 package edn.stratodonut.trackwork;
 
-import com.simibubi.create.foundation.config.ConfigBase;
-import com.simibubi.create.infrastructure.config.AllConfigs;
+import net.createmod.catnip.config.ConfigBase;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;

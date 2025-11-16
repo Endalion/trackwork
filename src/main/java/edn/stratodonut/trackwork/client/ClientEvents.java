@@ -1,7 +1,6 @@
 package edn.stratodonut.trackwork.client;
 
-import static com.jozufozu.flywheel.backend.Backend.isGameActive;
-
+import dev.engine_room.flywheel.api.backend.BackendManager;
 import edn.stratodonut.trackwork.sounds.TrackSoundScapes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.Level;
@@ -17,7 +16,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onTick(TickEvent.ClientTickEvent event) {
-        if (!isGameActive())
+        if (!BackendManager.isBackendOn())
             return;
 
         Level world = Minecraft.getInstance().level;

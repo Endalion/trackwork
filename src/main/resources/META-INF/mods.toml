@@ -40,9 +40,10 @@ description='''${mod_authors}'''
     versionRange="[2,)"
     ordering="AFTER"
     side="BOTH"
+
 [[dependencies."${mod_id}"]]
-    modId = "create"
-    mandatory = true
-    versionRange = "[0.5.1,)"
-    ordering = "AFTER"
-    side = "BOTH"
+    modId="create"
+    mandatory=true
+    versionRange="[6.0.0,6.1.0)"
+    ordering="NONE"
+    side="BOTH"

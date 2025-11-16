@@ -1,9 +1,9 @@
 package edn.stratodonut.trackwork;
 
+import com.tterrag.registrate.util.entry.EntityEntry;
 import edn.stratodonut.trackwork.tracks.TrackBeltEntity;
 import edn.stratodonut.trackwork.tracks.render.TrackBeltEntityRenderer;
 import edn.stratodonut.trackwork.wheel.WheelEntity;
-import com.tterrag.registrate.util.entry.EntityEntry;
 import net.minecraft.world.entity.MobCategory;
 import org.valkyrienskies.mod.client.EmptyRenderer;
 

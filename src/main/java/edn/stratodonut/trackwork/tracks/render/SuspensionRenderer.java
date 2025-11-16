@@ -1,16 +1,16 @@
 package edn.stratodonut.trackwork.tracks.render;
 
-import edn.stratodonut.trackwork.TrackworkConfigs;
-import edn.stratodonut.trackwork.client.TrackworkPartialModels;
-import edn.stratodonut.trackwork.tracks.blocks.SuspensionTrackBlock;
-import edn.stratodonut.trackwork.tracks.blocks.TrackBaseBlock;
-import edn.stratodonut.trackwork.tracks.blocks.SuspensionTrackBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
+import edn.stratodonut.trackwork.TrackworkConfigs;
+import edn.stratodonut.trackwork.client.TrackworkPartialModels;
+import edn.stratodonut.trackwork.tracks.blocks.SuspensionTrackBlock;
+import edn.stratodonut.trackwork.tracks.blocks.SuspensionTrackBlockEntity;
+import edn.stratodonut.trackwork.tracks.blocks.TrackBaseBlock;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -51,20 +51,20 @@ public class SuspensionRenderer extends KineticBlockEntityRenderer<SuspensionTra
         float yRot = (trackAxis == Direction.Axis.X) ? 0 : 90;
 
         if (state.hasProperty(SuspensionTrackBlock.WHEEL_VARIANT)
-                && state.getValue(SuspensionTrackBlock.WHEEL_VARIANT) != SuspensionTrackBlock.TrackVariant.BLANK) {
+                && state.getValue(SuspensionTrackBlock.WHEEL_VARIANT) != SuspensionTrackBlock.TrackVariant.blank) {
 //            SuperByteBuffer wheels = CachedBufferer.partial(TrackworkPartialModels.SUSPENSION_WHEEL, state) ;
             SuperByteBuffer wheels = be.getWheelRadius() < 0.6f
-                    ? CachedBufferer.partial(TrackworkPartialModels.SUSPENSION_WHEEL, state) :
-                    be.getWheelRadius() > 0.8f ? CachedBufferer.partial(TrackworkPartialModels.LARGE_SUSPENSION_WHEEL, state) :
-                    CachedBufferer.partial(TrackworkPartialModels.MED_SUSPENSION_WHEEL, state);
-            wheels.centre()
-                    .rotateY(yRot)
+                    ? CachedBuffers.partial(TrackworkPartialModels.SUSPENSION_WHEEL, state) :
+                    be.getWheelRadius() > 0.8f ? CachedBuffers.partial(TrackworkPartialModels.LARGE_SUSPENSION_WHEEL, state) :
+                    CachedBuffers.partial(TrackworkPartialModels.MED_SUSPENSION_WHEEL, state);
+            wheels.center()
+                    .rotateYDegrees(yRot)
                     .translate(0, be.getWheelRadius() - 0.5, 0)
                     .translate(0, -be.getWheelTravel(partialTicks), be.getPointHorizontalOffset())
-                    .rotateX(-angleForBE)
+                    .rotateXDegrees(-angleForBE)
 //                    .scale(1, be.getWheelRadius() / 0.5f, be.getWheelRadius() / 0.5f)
                     .translate(0, 9 / 16f, 0)
-                    .unCentre();
+                    .uncenter();
 
             wheels.light(light)
                     .renderInto(ms, buffer.getBuffer(RenderType.solid()));

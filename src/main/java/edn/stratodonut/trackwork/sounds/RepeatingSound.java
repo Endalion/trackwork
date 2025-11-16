@@ -1,7 +1,6 @@
 package edn.stratodonut.trackwork.sounds;
 
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
-
+import net.createmod.catnip.animation.AnimationTickHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -10,11 +9,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class RepeatingSound {
 
-	private SoundEvent event;
-	private float sharedPitch;
-	private int repeatDelay;
-	private TrackSoundScape scape;
-	private float relativeVolume;
+	private final SoundEvent event;
+	private final float sharedPitch;
+	private final int repeatDelay;
+	private final TrackSoundScape scape;
+	private final float relativeVolume;
 
 	public RepeatingSound(SoundEvent event, TrackSoundScape scape, float sharedPitch, float relativeVolume,
 		int repeatDelay) {

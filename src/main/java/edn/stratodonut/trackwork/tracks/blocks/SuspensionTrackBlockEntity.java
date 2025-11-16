@@ -1,33 +1,7 @@
 package edn.stratodonut.trackwork.tracks.blocks;
 
-import static com.simibubi.create.content.kinetics.base.HorizontalKineticBlock.HORIZONTAL_FACING;
-import static com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock.AXIS;
-import static edn.stratodonut.trackwork.TrackSounds.SUSPENSION_CREAK;
-import static edn.stratodonut.trackwork.tracks.forces.PhysicsTrackController.UP;
-import static org.valkyrienskies.mod.common.util.VectorConversionsMCKt.toJOML;
-import static org.valkyrienskies.mod.common.util.VectorConversionsMCKt.toMinecraft;
-
-import java.util.List;
-import java.util.Random;
-import java.util.function.Supplier;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Math;
-import org.joml.Vector3d;
-import org.joml.Vector3dc;
-import org.valkyrienskies.core.api.ships.ServerShip;
-import org.valkyrienskies.core.api.ships.Ship;
-import org.valkyrienskies.mod.common.VSGameUtilsKt;
-import org.valkyrienskies.physics_api.PoseVel;
-
 import com.simibubi.create.infrastructure.config.AllConfigs;
-
-import edn.stratodonut.trackwork.TrackAmbientGroups;
-import edn.stratodonut.trackwork.TrackDamageSources;
-import edn.stratodonut.trackwork.TrackPackets;
-import edn.stratodonut.trackwork.TrackworkConfigs;
-import edn.stratodonut.trackwork.TrackworkUtil;
+import edn.stratodonut.trackwork.*;
 import edn.stratodonut.trackwork.sounds.TrackSoundScapes;
 import edn.stratodonut.trackwork.tracks.ITrackPointProvider;
 import edn.stratodonut.trackwork.tracks.data.PhysTrackData;
@@ -53,8 +27,26 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Math;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
+import org.valkyrienskies.core.api.ships.ServerShip;
+import org.valkyrienskies.core.api.ships.Ship;
+import org.valkyrienskies.mod.common.VSGameUtilsKt;
+import org.valkyrienskies.physics_api.PoseVel;
+
+import java.util.List;
+import java.util.Random;
+import java.util.function.Supplier;
+
+import static com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock.AXIS;
+import static edn.stratodonut.trackwork.TrackSounds.SUSPENSION_CREAK;
+import static edn.stratodonut.trackwork.tracks.forces.PhysicsTrackController.UP;
+import static org.valkyrienskies.mod.common.util.VectorConversionsMCKt.toJOML;
+import static org.valkyrienskies.mod.common.util.VectorConversionsMCKt.toMinecraft;
 
 public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements ITrackPointProvider {
     private float wheelRadius;
@@ -122,7 +114,8 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
                 PhysTrackData.PhysTrackCreateData data = new PhysTrackData.PhysTrackCreateData(toJOML(Vec3.atCenterOf(this.getBlockPos())));
                 this.trackID = controller.addTrackBlock(data);
                 this.sendData();
-                if (this.trackID != null) return;
+                if (this.trackID != null) {
+                }
             }
         }
     }
@@ -242,9 +235,9 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
                 // Entity Damage
                 // TODO: Players don't get pushed, why?
                 List<LivingEntity> hits = this.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.getBlockPos()).deflate(0.5).expandTowards(0, -1.5, 0));
-                Vec3 worldPos = toMinecraft(ship.getShipToWorld().transformPosition(toJOML(Vec3.atCenterOf(this.getBlockPos()))));;
+                Vec3 worldPos = toMinecraft(ship.getShipToWorld().transformPosition(toJOML(Vec3.atCenterOf(this.getBlockPos()))));
                 for (LivingEntity e : hits) {
-                    this.push(e, worldPos);
+                    push(e, worldPos);
                     Vec3 relPos = e.position().subtract(worldPos);
                     float speed = Math.abs(this.getSpeed());
                     if (speed > 1) e.hurt(TrackDamageSources.runOver(this.level), (speed / 8f) * AllConfigs.server().kinetics.crushingDamage.get());
@@ -252,7 +245,7 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
 
                 BlockState state = this.getBlockState();
                 if (wheelTravelDelta < -0.3 && state.hasProperty(SuspensionTrackBlock.WHEEL_VARIANT)
-                        && state.getValue(SuspensionTrackBlock.WHEEL_VARIANT) != SuspensionTrackBlock.TrackVariant.BLANK) {
+                        && state.getValue(SuspensionTrackBlock.WHEEL_VARIANT) != SuspensionTrackBlock.TrackVariant.blank) {
                     this.level.playSound(null, this.getBlockPos(), SUSPENSION_CREAK.get(), SoundSource.BLOCKS,
                             Math.clamp(0.0f, 2.0f, Math.abs(wheelTravelDelta * 3 * (this.getSpeed() / 256))*0.5f),
                             Math.lerp(1, 0.3f, -wheelTravelDelta) + 0.4F * this.random.nextFloat()
@@ -268,7 +261,8 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
         if (this.assembled && !this.level.isClientSide && this.ship.get() != null) TrackPackets.getChannel().send(packetTarget(), new SuspensionWheelPacket(this.getBlockPos(), this.wheelTravel));
     }
 
-    public record ClipResult(Vector3dc trackTangent, Vec3 suspensionLength, @Nullable Long groundShipId) { ; }
+    public record ClipResult(Vector3dc trackTangent, Vec3 suspensionLength, @Nullable Long groundShipId) {
+    }
 
     private @NotNull ClipResult clipAndResolve(ServerShip ship, Direction.Axis axis, Vec3 start, Vec3 dir) {
         BlockHitResult bResult = this.level.clip(new ClipContext(start, start.add(dir), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, null));
@@ -355,8 +349,8 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
 
                 d0 *= d3;
                 d1 *= d3;
-                d0 *= (double)0.2F;
-                d1 *= (double)0.2F;
+                d0 *= 0.2F;
+                d1 *= 0.2F;
 
                 if (!entity.isVehicle()) {
                     entity.push(d0, 0.0D, d1);
