@@ -230,7 +230,7 @@ public class OleoWheelBlockEntity extends SmartBlockEntity {
             for (LivingEntity e : hits) {
                 SuspensionTrackBlockEntity.push(e, worldPos);
                 float speed = Math.abs(this.getWheelSpeed());
-                if (speed > 1) e.hurt(TrackDamageSources.runOver(this.level), (speed / 16f) * AllConfigs.server().kinetics.crushingDamage.get());
+                if (speed > TrackworkConfigs.server().damageSpeed.get()) e.hurt(TrackDamageSources.runOver(this.level), (speed / 16f) * AllConfigs.server().kinetics.crushingDamage.get());
                 if (e instanceof ServerPlayer p) p.connection.send(new ClientboundSetEntityMotionPacket(p));
             }
 
