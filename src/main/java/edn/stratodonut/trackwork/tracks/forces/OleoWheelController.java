@@ -142,7 +142,7 @@ public final class OleoWheelController implements ShipPhysicsListener {
 
         double suspensionCompressionDelta = 0f;
         if (data.lastSuspensionForce != null) {
-            suspensionCompressionDelta = suspensionForce.sub(data.lastSuspensionForce, new Vector3d()).length();
+            suspensionCompressionDelta = suspensionForce.sub(data.lastSuspensionForce, new Vector3d()).dot(trackNormal);
         }
         data.lastSuspensionForce = suspensionForce;
 
