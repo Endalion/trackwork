@@ -65,6 +65,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
     private float wheelTravel;
     private float prevWheelTravel;
     private float serverTargetWheelTravel;
+    private float lastSyncedWheelTravel;
     private float prevFreeWheelAngle;
     private float horizontalOffset;
     private float axialOffset;
@@ -254,7 +255,10 @@ public class WheelBlockEntity extends KineticBlockEntity {
 
                 this.prevWheelTravel = this.wheelTravel;
                 this.wheelTravel = newWheelTravel;
-                if (Math.abs(delta) > 0.03f || Math.abs(deltaSteeringValue) > 0.1f) this.syncToClient();
+                if (Math.abs(this.wheelTravel - this.lastSyncedWheelTravel) > 0.04f || Math.abs(deltaSteeringValue) > 0.12f) {
+                    this.syncToClient();
+                    this.lastSyncedWheelTravel = this.wheelTravel;
+                }
 
                 // Entity Damage
                 AABB wheelAabb = new AABB(this.getBlockPos())
@@ -391,6 +395,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
         this.axialOffset = compound.getFloat("AxialOffset");
         this.prevWheelTravel = this.wheelTravel;
         this.serverTargetWheelTravel = this.wheelTravel;
+        this.lastSyncedWheelTravel = this.wheelTravel;
         super.read(compound, clientPacket);
     }
 
