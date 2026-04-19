@@ -65,6 +65,7 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
     public boolean assembleNextTick = true;
     private float wheelTravel;
     private float prevWheelTravel;
+    private float serverTargetWheelTravel;
     private double suspensionScale = 1.0;
     private float horizontalOffset;
 
@@ -191,7 +192,12 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
 
         // TODO: degrass + de-snowlayer
 
-        if (this.level.isClientSide) return;
+        if (this.level.isClientSide) {
+            this.prevWheelTravel = this.wheelTravel;
+            float gap = this.serverTargetWheelTravel - this.wheelTravel;
+            this.wheelTravel += gap * Math.min(0.5f, Math.abs(gap) * 4f);
+            return;
+        }
         if (this.assembled) {
             Vec3 start = Vec3.atCenterOf(this.getBlockPos());
             Direction.Axis axis = this.getBlockState().getValue(AXIS);
@@ -225,8 +231,8 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
                 this.prevWheelTravel = this.wheelTravel;
                 float newWheelTravel = (float) (suspensionTravel + restOffset);
                 float wheelTravelDelta = newWheelTravel - this.wheelTravel;
-                if (wheelTravelDelta > 0.01f) TrackPackets.getChannel().send(packetTarget(), new SuspensionWheelPacket(this.getBlockPos(), this.wheelTravel));
                 this.wheelTravel = newWheelTravel;
+                if (Math.abs(wheelTravelDelta) > 0.03f) TrackPackets.getChannel().send(packetTarget(), new SuspensionWheelPacket(this.getBlockPos(), this.wheelTravel));
 
                 // Entity Damage
                 AABB trackAabb = new AABB(this.getBlockPos())
@@ -375,6 +381,7 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
         this.wheelTravel = compound.getFloat("WheelTravel");
         if (compound.contains("horizontalOffset")) this.horizontalOffset = compound.getFloat("horizontalOffset");
         this.prevWheelTravel = this.wheelTravel;
+        this.serverTargetWheelTravel = this.wheelTravel;
         super.read(compound, clientPacket);
     }
 
@@ -392,7 +399,6 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
     }
 
     public void handlePacket(SuspensionWheelPacket p) {
-        this.prevWheelTravel = this.wheelTravel;
-        this.wheelTravel = p.wheelTravel;
+        this.serverTargetWheelTravel = p.wheelTravel;
     }
 }

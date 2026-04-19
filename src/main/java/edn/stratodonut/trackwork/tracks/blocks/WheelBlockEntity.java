@@ -64,6 +64,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
     protected final Random random = new Random();
     private float wheelTravel;
     private float prevWheelTravel;
+    private float serverTargetWheelTravel;
     private float prevFreeWheelAngle;
     private float horizontalOffset;
     private float axialOffset;
@@ -196,7 +197,12 @@ public class WheelBlockEntity extends KineticBlockEntity {
             }
         }
 
-        if (this.level.isClientSide) return;
+        if (this.level.isClientSide) {
+            this.prevWheelTravel = this.wheelTravel;
+            float gap = this.serverTargetWheelTravel - this.wheelTravel;
+            this.wheelTravel += gap * Math.min(0.5f, Math.abs(gap) * 4f);
+            return;
+        }
         if (this.assembled) {
             Vec3 start = Vec3.atCenterOf(this.getBlockPos());
             Direction.Axis axis = dir.getAxis();
@@ -248,7 +254,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
 
                 this.prevWheelTravel = this.wheelTravel;
                 this.wheelTravel = newWheelTravel;
-                if (Math.abs(delta) > 0.01f || Math.abs(deltaSteeringValue) > 0.05f) this.syncToClient();
+                if (Math.abs(delta) > 0.03f || Math.abs(deltaSteeringValue) > 0.1f) this.syncToClient();
 
                 // Entity Damage
                 AABB wheelAabb = new AABB(this.getBlockPos())
@@ -384,6 +390,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
         this.horizontalOffset = compound.getFloat("HorizontalOffset");
         this.axialOffset = compound.getFloat("AxialOffset");
         this.prevWheelTravel = this.wheelTravel;
+        this.serverTargetWheelTravel = this.wheelTravel;
         super.read(compound, clientPacket);
     }
 
@@ -469,8 +476,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
     }
 
     public void handlePacket(SimpleWheelPacket p) {
-        this.prevWheelTravel = this.wheelTravel;
-        this.wheelTravel = p.wheelTravel;
+        this.serverTargetWheelTravel = p.wheelTravel;
         this.steeringValue = p.steeringValue;
         this.horizontalOffset = p.horizontalOffset;
     }
