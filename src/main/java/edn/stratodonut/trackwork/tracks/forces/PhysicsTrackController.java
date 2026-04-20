@@ -175,7 +175,7 @@ public final class PhysicsTrackController implements ShipPhysicsListener {
 
         double suspensionCompressionDelta = 0;
         if (data.lastSuspensionForce != null) {
-            suspensionCompressionDelta = suspensionForce.sub(data.lastSuspensionForce, new Vector3d()).dot(trackNormal);
+            suspensionCompressionDelta = suspensionForce.sub(data.lastSuspensionForce, new Vector3d()).length();
         }
         data.lastSuspensionForce = suspensionForce;
         Vector3dc trackSurface = trackTangentForce.mul(data.trackRPM * RPM_TO_RADS * 0.5, new Vector3d());
