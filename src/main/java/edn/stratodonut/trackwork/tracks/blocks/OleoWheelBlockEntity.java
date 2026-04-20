@@ -55,7 +55,11 @@ public class OleoWheelBlockEntity extends SmartBlockEntity {
     private float wheelTravel;
     private float prevWheelTravel;
     private float serverTargetWheelTravel;
+    // Server-side only
     private float lastSyncedWheelTravel;
+    private static final float COMPRESS_ALPHA = 0.667f;
+    private static final float REBOUND_ALPHA = 0.394f;
+
     private float prevFreeWheelAngle;
     private float horizontalOffset;
     private float axialOffset;
@@ -150,7 +154,11 @@ public class OleoWheelBlockEntity extends SmartBlockEntity {
         if (this.level.isClientSide) {
             this.prevWheelTravel = this.wheelTravel;
             float gap = this.serverTargetWheelTravel - this.wheelTravel;
-            this.wheelTravel += gap * Math.min(0.5f, Math.abs(gap) * 4f);
+            if (gap > 1.2f || gap < -1.2f) {
+                this.wheelTravel = this.serverTargetWheelTravel;
+            } else {
+                this.wheelTravel += gap * (gap >= 0 ? COMPRESS_ALPHA : REBOUND_ALPHA);
+            }
             this.prevFreeWheelAngle += this.getWheelSpeed() * 3f / 10;
             return;
         }
@@ -305,12 +313,16 @@ public class OleoWheelBlockEntity extends SmartBlockEntity {
 
     @Override
     protected void read(CompoundTag compound, boolean clientPacket) {
-        this.wheelTravel = compound.getFloat("WheelTravel");
+        if (clientPacket) {
+            this.serverTargetWheelTravel = compound.getFloat("WheelTravel");
+        } else {
+            this.wheelTravel = compound.getFloat("WheelTravel");
+            this.prevWheelTravel = this.wheelTravel;
+            this.serverTargetWheelTravel = this.wheelTravel;
+            this.lastSyncedWheelTravel = this.wheelTravel;
+        }
         this.horizontalOffset = compound.getFloat("HorizontalOffset");
         this.axialOffset = compound.getFloat("AxialOffset");
-        this.prevWheelTravel = this.wheelTravel;
-        this.serverTargetWheelTravel = this.wheelTravel;
-        this.lastSyncedWheelTravel = this.wheelTravel;
         super.read(compound, clientPacket);
     }
 
