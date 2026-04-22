@@ -64,6 +64,13 @@ public class WheelBlockEntity extends KineticBlockEntity {
     protected final Random random = new Random();
     private float wheelTravel;
     private float prevWheelTravel;
+    private float serverTargetWheelTravel;
+    // Server-side only
+    private float lastSyncedWheelTravel;
+
+    private static final float COMPRESS_ALPHA = 0.667f;
+    private static final float REBOUND_ALPHA = 0.394f;
+
     private float prevFreeWheelAngle;
     private float horizontalOffset;
     private float axialOffset;
@@ -196,7 +203,16 @@ public class WheelBlockEntity extends KineticBlockEntity {
             }
         }
 
-        if (this.level.isClientSide) return;
+        if (this.level.isClientSide) {
+            this.prevWheelTravel = this.wheelTravel;
+            float gap = this.serverTargetWheelTravel - this.wheelTravel;
+            if (gap > 1.2f || gap < -1.2f) {
+                this.wheelTravel = this.serverTargetWheelTravel;
+            } else {
+                this.wheelTravel += gap * (gap >= 0 ? COMPRESS_ALPHA : REBOUND_ALPHA);
+            }
+            return;
+        }
         if (this.assembled) {
             Vec3 start = Vec3.atCenterOf(this.getBlockPos());
             Direction.Axis axis = dir.getAxis();
@@ -248,7 +264,10 @@ public class WheelBlockEntity extends KineticBlockEntity {
 
                 this.prevWheelTravel = this.wheelTravel;
                 this.wheelTravel = newWheelTravel;
-                if (Math.abs(delta) > 0.01f || Math.abs(deltaSteeringValue) > 0.05f) this.syncToClient();
+                if (Math.abs(this.wheelTravel - this.lastSyncedWheelTravel) > 0.04f || Math.abs(deltaSteeringValue) > 0.12f) {
+                    this.syncToClient();
+                    this.lastSyncedWheelTravel = this.wheelTravel;
+                }
 
                 // Entity Damage
                 AABB wheelAabb = new AABB(this.getBlockPos())
@@ -380,10 +399,16 @@ public class WheelBlockEntity extends KineticBlockEntity {
     @Override
     protected void read(CompoundTag compound, boolean clientPacket) {
         this.assembled = compound.getBoolean("Assembled");
-        this.wheelTravel = compound.getFloat("WheelTravel");
+        if (clientPacket) {
+            this.serverTargetWheelTravel = compound.getFloat("WheelTravel");
+        } else {
+            this.wheelTravel = compound.getFloat("WheelTravel");
+            this.prevWheelTravel = this.wheelTravel;
+            this.serverTargetWheelTravel = this.wheelTravel;
+            this.lastSyncedWheelTravel = this.wheelTravel;
+        }
         this.horizontalOffset = compound.getFloat("HorizontalOffset");
         this.axialOffset = compound.getFloat("AxialOffset");
-        this.prevWheelTravel = this.wheelTravel;
         super.read(compound, clientPacket);
     }
 
@@ -469,8 +494,7 @@ public class WheelBlockEntity extends KineticBlockEntity {
     }
 
     public void handlePacket(SimpleWheelPacket p) {
-        this.prevWheelTravel = this.wheelTravel;
-        this.wheelTravel = p.wheelTravel;
+        this.serverTargetWheelTravel = p.wheelTravel;
         this.steeringValue = p.steeringValue;
         this.horizontalOffset = p.horizontalOffset;
     }

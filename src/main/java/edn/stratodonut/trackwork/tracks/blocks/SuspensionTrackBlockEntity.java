@@ -65,6 +65,13 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
     public boolean assembleNextTick = true;
     private float wheelTravel;
     private float prevWheelTravel;
+    private float serverTargetWheelTravel;
+    // Server-side only
+    private float lastSyncedWheelTravel;
+
+    private static final float COMPRESS_ALPHA = 0.667f;
+    private static final float REBOUND_ALPHA = 0.394f;
+
     private double suspensionScale = 1.0;
     private float horizontalOffset;
 
@@ -191,7 +198,16 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
 
         // TODO: degrass + de-snowlayer
 
-        if (this.level.isClientSide) return;
+        if (this.level.isClientSide) {
+            this.prevWheelTravel = this.wheelTravel;
+            float gap = this.serverTargetWheelTravel - this.wheelTravel;
+            if (gap > 1.2f || gap < -1.2f) {
+                this.wheelTravel = this.serverTargetWheelTravel;
+            } else {
+                this.wheelTravel += gap * (gap >= 0 ? COMPRESS_ALPHA : REBOUND_ALPHA);
+            }
+            return;
+        }
         if (this.assembled) {
             Vec3 start = Vec3.atCenterOf(this.getBlockPos());
             Direction.Axis axis = this.getBlockState().getValue(AXIS);
@@ -225,8 +241,11 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
                 this.prevWheelTravel = this.wheelTravel;
                 float newWheelTravel = (float) (suspensionTravel + restOffset);
                 float wheelTravelDelta = newWheelTravel - this.wheelTravel;
-                if (wheelTravelDelta > 0.01f) TrackPackets.getChannel().send(packetTarget(), new SuspensionWheelPacket(this.getBlockPos(), this.wheelTravel));
                 this.wheelTravel = newWheelTravel;
+                if (Math.abs(this.wheelTravel - this.lastSyncedWheelTravel) > 0.04f) {
+                    TrackPackets.getChannel().send(packetTarget(), new SuspensionWheelPacket(this.getBlockPos(), this.wheelTravel));
+                    this.lastSyncedWheelTravel = this.wheelTravel;
+                }
 
                 // Entity Damage
                 AABB trackAabb = new AABB(this.getBlockPos())
@@ -372,9 +391,15 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
     protected void read(CompoundTag compound, boolean clientPacket) {
         this.assembled = compound.getBoolean("Assembled");
         if (this.trackID == null && compound.contains("trackBlockID")) this.trackID = compound.getInt("trackBlockID");
-        this.wheelTravel = compound.getFloat("WheelTravel");
+        if (clientPacket) {
+            this.serverTargetWheelTravel = compound.getFloat("WheelTravel");
+        } else {
+            this.wheelTravel = compound.getFloat("WheelTravel");
+            this.prevWheelTravel = this.wheelTravel;
+            this.serverTargetWheelTravel = this.wheelTravel;
+            this.lastSyncedWheelTravel = this.wheelTravel;
+        }
         if (compound.contains("horizontalOffset")) this.horizontalOffset = compound.getFloat("horizontalOffset");
-        this.prevWheelTravel = this.wheelTravel;
         super.read(compound, clientPacket);
     }
 
@@ -392,7 +417,6 @@ public class SuspensionTrackBlockEntity extends TrackBaseBlockEntity implements 
     }
 
     public void handlePacket(SuspensionWheelPacket p) {
-        this.prevWheelTravel = this.wheelTravel;
-        this.wheelTravel = p.wheelTravel;
+        this.serverTargetWheelTravel = p.wheelTravel;
     }
 }

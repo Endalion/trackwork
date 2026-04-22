@@ -33,7 +33,7 @@ public class OleoWheelData {
 
     public OleoWheelData(long pos, float steeringValue, double susScaled, Direction.Axis wheelAxis,
                          float axialOffset, float horizontalOffset, double wheelRadius, float wheelRPM,
-                         boolean isFreespin) {
+                         boolean isFreespin, Vector3dc lastSuspensionForce) {
         this.blockPos = pos;
         this.isFreespin = isFreespin;
         this.susScaled = susScaled;
@@ -43,6 +43,7 @@ public class OleoWheelData {
         this.wheelRPM = wheelRPM;
         this.steeringValue = steeringValue;
         this.wheelAxis = wheelAxis;
+        this.lastSuspensionForce = lastSuspensionForce;
     }
 
     public final OleoWheelData updateWith(OleoWheelData update) {
@@ -55,7 +56,8 @@ public class OleoWheelData {
                 update.horizontalOffset,
                 update.wheelRadius,
                 update.wheelRPM,
-                update.isFreespin
+                update.isFreespin,
+                this.lastSuspensionForce
         );
     }
 }
