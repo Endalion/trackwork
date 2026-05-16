@@ -1,29 +1,30 @@
 package edn.stratodonut.trackwork.wheel;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-import org.apache.logging.log4j.core.jmx.Server;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3d;
 import org.joml.Quaterniond;
+import org.joml.Quaterniondc;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.valkyrienskies.core.api.ships.properties.ShipInertiaData;
 import org.valkyrienskies.core.api.ships.properties.ShipTransform;
-import org.valkyrienskies.core.internal.ShipTeleportData;
 import org.valkyrienskies.core.internal.physics.PhysicsEntityData;
 import org.valkyrienskies.core.internal.physics.PhysicsEntityServer;
 import org.valkyrienskies.core.internal.physics.VSSphereCollisionShapeData;
-import org.valkyrienskies.core.internal.world.VsiServerShipWorld;
 import org.valkyrienskies.mod.common.VSGameUtilsKt;
 import org.valkyrienskies.mod.common.util.DimensionIdProvider;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import static org.valkyrienskies.mod.common.ValkyrienSkiesMod.getVsCore;
 
 public class WheelEntity {
+    private static volatile Method newShipTeleportDataMethod;
+    private static volatile Method teleportPhysicsEntityMethod;
+
     public static @Nullable PhysicsEntityServer getInLevel(ServerLevel level, long id) {
         if (!aliveInLevel(level, id)) {
             return null;
@@ -54,17 +55,54 @@ public class WheelEntity {
         PhysicsEntityServer serverData = VSGameUtilsKt.getShipObjectWorld(level)
                 .retrieveLoadedPhysicsEntities().get(id);
 
-        ShipTeleportData teleportData = getVsCore().newShipTeleportData(
-                pos,
-                new Quaterniond(),
-                new Vector3d(),
-                new Vector3d(),
-                null,
-                null,
-                null
-        );
-        VSGameUtilsKt.getShipObjectWorld(level).teleportPhysicsEntity(serverData, teleportData);
+        Object vsCore = getVsCore();
+        Object shipWorld = VSGameUtilsKt.getShipObjectWorld(level);
+        try {
+            Method create = newShipTeleportDataMethod;
+            if (create == null) {
+                create = vsCore.getClass().getMethod(
+                        "newShipTeleportData",
+                        Vector3dc.class, Quaterniondc.class, Vector3dc.class, Vector3dc.class,
+                        String.class, Double.class, Vector3dc.class
+                );
+                newShipTeleportDataMethod = create;
+            }
+            Object teleportData = create.invoke(vsCore,
+                    pos,
+                    new Quaterniond(),
+                    new Vector3d(),
+                    new Vector3d(),
+                    null,
+                    null,
+                    null
+            );
+
+            Method teleport = teleportPhysicsEntityMethod;
+            if (teleport == null) {
+                teleport = findTeleportPhysicsEntity(shipWorld.getClass());
+                teleportPhysicsEntityMethod = teleport;
+            }
+            teleport.invoke(shipWorld, serverData, teleportData);
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+            throw new RuntimeException("Trackwork: incompatible Valkyrien Skies version, could not teleport wheel physics entity", e);
+        } catch (InvocationTargetException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof RuntimeException) throw (RuntimeException) cause;
+            if (cause instanceof Error) throw (Error) cause;
+            throw new RuntimeException("Trackwork: failed to teleport wheel physics entity", cause);
+        }
         return true;
+    }
+
+    private static Method findTeleportPhysicsEntity(Class<?> shipWorldClass) throws NoSuchMethodException {
+        for (Method m : shipWorldClass.getMethods()) {
+            if (!"teleportPhysicsEntity".equals(m.getName())) continue;
+            if (m.getParameterCount() != 2) continue;
+            if (m.getParameterTypes()[0].isAssignableFrom(PhysicsEntityServer.class)) {
+                return m;
+            }
+        }
+        throw new NoSuchMethodException("teleportPhysicsEntity(PhysicsEntityServer, ShipTeleportData) not found on " + shipWorldClass.getName());
     }
 
     public static final class DataBuilder {
