@@ -8,8 +8,8 @@
   "block.trackwork.med_phys_track" : "Medium  Sprocket Track",
   "block.trackwork.large_phys_track" : "Large Sprocket Track",
 
-  "block.trackwork.track_level_controller" : "Suspension Controller",
-  "block.trackwork.track_level_controller.tooltip.summary": "_Input rotation_ to tilt and adjust suspension across the ship!",
+  "block.trackwork.track_level_controller" : "Suspension Adjuster",
+  "block.trackwork.track_level_controller.tooltip.summary": "_Input rotation_ to tilt and adjust suspension across the ship. Try different orientations!",
 
   "block.trackwork.simple_wheel": "Large Wheel",
   "block.trackwork.simple_wheel_part": "Large Spare Tire",
