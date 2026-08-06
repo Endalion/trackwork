@@ -55,7 +55,6 @@ public final class OleoWheelController implements ShipPhysicsListener {
 
     private volatile Vector3dc suspensionAdjust = new Vector3d(0, 1, 0);
     private volatile float suspensionStiffness = 1.0f;
-    private volatile float suspensionDampening = 1.2f;
 
     public OleoWheelController() {}
 
@@ -156,7 +155,7 @@ public final class OleoWheelController implements ShipPhysicsListener {
             tForce.add(springForce);
 
             // Less damper downward
-            double damperMagnitude = m * -suspensionDelta * coefficientOfPower * this.suspensionDampening;
+            double damperMagnitude = m * 1.2 * -suspensionDelta * coefficientOfPower * this.suspensionStiffness;
             if (damperMagnitude > 0) {
                 damperMagnitude *= 0.5;
             }

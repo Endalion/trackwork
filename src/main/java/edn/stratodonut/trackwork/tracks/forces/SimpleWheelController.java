@@ -64,7 +64,6 @@ public final class SimpleWheelController implements ShipPhysicsListener {
 
     private volatile Vector3dc suspensionAdjust = new Vector3d(0, 1, 0);
     private volatile float suspensionStiffness = 1.0f;
-    private volatile float suspensionDampening = 1.2f;
 
     public SimpleWheelController() {}
 
@@ -186,7 +185,7 @@ public final class SimpleWheelController implements ShipPhysicsListener {
             tForce.add(springForce);
 
             // Damper force (dampening) - apply in world coordinates but calculated relative to local up
-            Vector3dc damperForce = trackNormal.mul(m * -suspensionDelta * coefficientOfPower * this.suspensionDampening, new Vector3d());
+            Vector3dc damperForce = trackNormal.mul(m * 1.2 * -suspensionDelta * coefficientOfPower * this.suspensionStiffness, new Vector3d());
             tForce.add(damperForce);
             // Really half-assed antislip when the spring is stronger than friction (what?)
             if (data.wheelRPM == 0) {
