@@ -60,9 +60,6 @@ public final class PhysicsTrackController implements ShipPhysicsListener {
 
     private volatile Vector3dc suspensionAdjust = new Vector3d(0, 1, 0);
     private volatile float suspensionStiffness = 1.0f;
-    @JsonIgnore
-    @Deprecated(forRemoval = true)
-    private volatile float suspensionDampening = 1.2f;
 
     public PhysicsTrackController () {}
 
