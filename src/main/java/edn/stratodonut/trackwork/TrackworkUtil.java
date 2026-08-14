@@ -16,6 +16,7 @@ import org.valkyrienskies.core.api.ships.properties.ShipTransform;
 import org.valkyrienskies.core.api.world.PhysLevel;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -71,8 +72,11 @@ public class TrackworkUtil {
             throw new IllegalArgumentException(String.format("Invalid clip order. Must be 0, 1 or 2, received %d", order));
         }
 
+        long[] ignoredIds = Arrays.copyOf(ignoreWheelIds, ignoreWheelIds.length + 1);
+        ignoredIds[ignoredIds.length - 1] = ship.getId();
+
         Optional<ReducedRayCastResult> accumResult = points
-                .map(p -> physLevel.rayCast(p, normal, clipVector.length(), ignoreWheelIds))
+                .map(p -> physLevel.rayCast(p, normal, clipVector.length(), ignoredIds))
                 .filter(Objects::nonNull)
                 .filter(result -> result.getHitBody().getId() != ship.getId())
                 .map(result -> new ReducedRayCastResult(result.getDistance(), result.getVelocity()))
