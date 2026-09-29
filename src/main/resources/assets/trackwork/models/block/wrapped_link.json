@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "create:block/belt",
+	"parent": "minecraft:block/block",
 	"texture_size": [32, 32],
 	"textures": {
 		"2": "trackwork:block/belt",

@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "create:block/small_tire",
+	"parent": "minecraft:block/block",
 	"render_type": "minecraft:cutout",
 	"texture_size": [128, 128],
 	"textures": {
